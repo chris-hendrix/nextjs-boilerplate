@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Image from 'next/image'
+import Home from '@/icons/Home'
 import UserGroup from '@/icons/UserGroup'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,6 +20,12 @@ const SidebarContent: React.FC = () => (
         <span>Menu</span>
       </li>
       <li>
+        <a href="/">
+          <Home height={24} width={24} />
+          Home
+        </a>
+      </li>
+      <li>
         <a href="/users">
           <UserGroup height={24} width={24} />
           Users
@@ -31,7 +38,7 @@ const SidebarContent: React.FC = () => (
 const Navbar: React.FC = () => (
   <nav className="navbar bg-primary text-primary-content">
     <div className="flex-1">
-      <a className="btn btn-ghost normal-case text-xl">Next.js Boilerplate</a>
+      <a className="btn btn-ghost normal-case text-xl" href="/">Next.js Boilerplate</a>
     </div>
     <div className="flex-none">
       <div className="dropdown dropdown-end">
