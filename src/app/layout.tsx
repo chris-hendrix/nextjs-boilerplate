@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import Image from 'next/image'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +16,38 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="navbar bg-primary text-primary-content">
+          <div className="flex-1">
+            <a className="btn btn-ghost normal-case text-xl">Next.js Boilerplate</a>
+          </div>
+          <div className="flex-none">
+            <ul className="menu menu-horizontal px-1">
+              <li><a>Item 1</a></li>
+              <li><a>Item 2</a></li>
+            </ul>
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <Image src="/avatar.svg" alt="avatar.svg" fill />
+                </div>
+              </label>
+              <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
+                <li>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li><a>Settings</a></li>
+                <li><a>Logout</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        {children}
+      </body>
     </html>
   )
 }
