@@ -5,3 +5,9 @@ import { PrismaClient } from '@prisma/client'
 declare global {
   var prisma: PrismaClient | null
 }
+
+declare module 'next-auth' {
+  export interface Session extends NextAuth.Session {
+    user: User | null
+  }
+}
