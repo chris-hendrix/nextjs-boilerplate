@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest) => {
 }
 
 export const POST = async (req: NextRequest) => {
-  const { body } = await req.json()
+  const body = await req.json()
   if (!body) throw new ApiError('Request must have body', 400)
   const { username, email, password } = body
   if (await prisma.user.findUnique({ where: { email } })) {
