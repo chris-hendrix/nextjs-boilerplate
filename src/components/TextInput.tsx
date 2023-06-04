@@ -5,20 +5,18 @@ import isStrongPassword from 'validator/lib/isStrongPassword'
 type Props = {
   name: string,
   form: UseFormReturn,
+  disabled?: boolean
 }
 
-const TextInput: React.FC<Props> = ({
-  name,
-  form,
-}) => {
+const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
   const { register, getValues, formState: { errors } } = form
 
-  let inputProps = { label: '', type: 'text' }
+  let inputProps = { label: '', type: 'text', disabled }
 
   if (name === 'username') {
     inputProps = {
       ...inputProps,
-      label: 'Name*',
+      label: 'Username*',
       ...!register ? {} : register(name, {
         required: 'Name is required',
         validate: (value: string) => value.length > 2 || 'Too short'
