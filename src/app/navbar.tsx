@@ -8,8 +8,8 @@ const Navbar: React.FC = () => {
     if (isLoading) return <></>
     if (!user) {
       return <ul className="menu menu-horizontal px-1">
-        <li><a className="btn btn-secondary mr-3">Log in</a></li>
-        <li><a className="btn btn-accent" href="/signup" >Sign up</a></li>
+        <li><a className="btn btn-secondary mr-3 flex content-center">Log in</a></li>
+        <li><a className="btn btn-accent content-center" href="/signup" >Sign up</a></li>
       </ul>
     }
 
