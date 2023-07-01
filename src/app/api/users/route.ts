@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 import { generateHash } from '@/utils/hash'
 import { ApiError, routeWrapper } from '@/utils/api'
 
-const sanitizeSelect = () => {
+export const sanitizeSelect = () => {
   const fields = Object.keys(Prisma.UserScalarFieldEnum)
   return Object.fromEntries(fields.map((k) => [k, k !== 'password']))
 }
@@ -18,7 +18,6 @@ export const GET = routeWrapper(
       take: skip && take ? Number(take) : undefined,
       select: sanitizeSelect()
     })
-    NextResponse.json(users)
     return NextResponse.json(users)
   }
 )

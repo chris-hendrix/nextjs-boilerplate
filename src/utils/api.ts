@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
-import { authOptions } from '@/app/api/auth/[...nextauth]'
+import authOptions from '@/lib/auth'
 
 export class ApiError extends Error {
   public readonly statusCode: number
@@ -38,12 +38,13 @@ const getErrorMessage = (message: string) => {
   return message
 }
 
-export const routeWrapper = (routeHandler: (req: NextRequest) => Promise<NextResponse>) => async (
-  req: NextRequest
-) => {
+export const routeWrapper = (
+  routeHandler: (
+    req: NextRequest, context?: any) => Promise<NextResponse>
+) => async (req: NextRequest, context?: any) => {
   try {
     logRequest(req)
-    const result = await routeHandler(req)
+    const result = await routeHandler(req, context)
     return result
   } catch (error: any) {
     const response = {

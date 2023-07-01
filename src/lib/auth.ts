@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import { NextAuthOptions } from 'next-auth'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
 import { validatePassword } from '@/utils/hash'
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -37,4 +37,4 @@ export const authOptions: NextAuthOptions = {
   }
 }
 
-export default NextAuth(authOptions)
+export default authOptions
