@@ -3,7 +3,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useAddUserMutation } from '@/store'
-import getBaseQueryErrorMessage from '@/lib/error'
+import getErrorMessage from '@/lib/error'
 import TextInput from '@/components/TextInput'
 import Alert from '@/components/Alert'
 
@@ -25,7 +25,7 @@ const Signup: React.FC = () => {
           <button type="submit" className="btn btn-primary w-full">
             Sign Up
           </button>
-          {error && <Alert message={getBaseQueryErrorMessage(error) as string} type="error" />}
+          {error && <div className="mt-2"><Alert message={getErrorMessage(error)} type="error" /></div>}
         </form>
       </div>
     </div>

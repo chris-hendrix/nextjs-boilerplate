@@ -50,7 +50,7 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
   if (name === 'cpassword') {
     inputProps = {
       ...inputProps,
-      label: 'Password confirmation',
+      label: 'Password confirmation*',
       type: 'password',
       ...!register || !getValues ? {} : register(name, {
         validate: (value: string) => getValues()?.password === value || 'Password does not match'

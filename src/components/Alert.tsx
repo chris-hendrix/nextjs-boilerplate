@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 type Props = {
-  message: string,
+  message: string | null,
   type?: 'normal' | 'info' | 'success' | 'warning' | 'error',
   time?: number
 }
@@ -27,6 +27,7 @@ const Alert: React.FC<Props> = ({ message, type = 'normal', time = 3000 }) => {
     return () => clearTimeout(timeout)
   }, [])
 
+  if (!message) return null
   if (!showAlert) return null
 
   return <div className={`alert ${type !== 'normal' ? `alert-${type}` : ''}`}>
