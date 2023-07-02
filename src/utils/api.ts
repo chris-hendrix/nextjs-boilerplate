@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import type { NextApiRequest, NextApiResponse, NextApiHandler } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
-import { authOptions } from '@/app/api/auth/[...nextauth]'
+import authOptions from '@/lib/auth'
 
 export class ApiError extends Error {
   public readonly statusCode: number
@@ -16,7 +17,7 @@ export class ApiError extends Error {
   }
 }
 
-const logRequest = (req: NextApiRequest) => {
+const logRequest = (req: NextRequest) => {
   if (process.env.NODE_ENV === 'test') return
   const { method, url, body } = req
   console.info('---')
@@ -32,22 +33,27 @@ const logError = (error: any) => {
   console.info('---')
 }
 
-export const apiHandler = (handler: NextApiHandler) => async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const getErrorMessage = (message: string) => {
+  if (message.includes('Unique constraint failed on the fields: (`username`)')) return 'Username exists'
+  return message
+}
+
+export const routeWrapper = (
+  routeHandler: (
+    req: NextRequest, context?: any) => Promise<NextResponse>
+) => async (req: NextRequest, context?: any) => {
   try {
     logRequest(req)
-    const result = await handler(req, res)
+    const result = await routeHandler(req, context)
     return result
   } catch (error: any) {
     const response = {
       ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
-      message: error.message,
+      message: getErrorMessage(error.message),
       statusCode: error.statusCode,
     }
     logError(response)
-    return res.status(error.statusCode || 500).json(response)
+    return NextResponse.json(response, { status: error.statusCode || 500 })
   }
 }
 

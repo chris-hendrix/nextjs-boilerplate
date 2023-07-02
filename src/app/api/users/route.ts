@@ -2,26 +2,27 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Prisma } from '@prisma/client'
 import prisma from '@/lib/prisma'
 import { generateHash } from '@/utils/hash'
-import { ApiError } from '@/utils/api'
+import { ApiError, routeWrapper } from '@/utils/api'
 
-const sanitizeSelect = () => {
+export const sanitizeSelect = () => {
   const fields = Object.keys(Prisma.UserScalarFieldEnum)
   return Object.fromEntries(fields.map((k) => [k, k !== 'password']))
 }
 
-export const GET = async (req: NextRequest) => {
-  const skip = req.nextUrl.searchParams.get('skip')
-  const take = req.nextUrl.searchParams.get('take')
-  const users = await prisma.user.findMany({
-    skip: skip && take ? Number(skip) : undefined,
-    take: skip && take ? Number(take) : undefined,
-    select: sanitizeSelect()
-  })
-  NextResponse.json(users)
-  return NextResponse.json(users)
-}
+export const GET = routeWrapper(
+  async (req: NextRequest) => {
+    const skip = req.nextUrl.searchParams.get('skip')
+    const take = req.nextUrl.searchParams.get('take')
+    const users = await prisma.user.findMany({
+      skip: skip && take ? Number(skip) : undefined,
+      take: skip && take ? Number(take) : undefined,
+      select: sanitizeSelect()
+    })
+    return NextResponse.json(users)
+  }
+)
 
-export const POST = async (req: NextRequest) => {
+export const POST = routeWrapper(async (req: NextRequest) => {
   const body = await req.json()
   if (!body) throw new ApiError('Request must have body', 400)
   const { username, email, password } = body
@@ -34,4 +35,4 @@ export const POST = async (req: NextRequest) => {
     select: sanitizeSelect()
   })
   return NextResponse.json(user)
-}
+})

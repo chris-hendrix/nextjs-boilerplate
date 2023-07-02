@@ -1,9 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import prisma from '@/lib/prisma'
+import { APP_URL } from '@/config'
 
 export class Api {
-  static BASE_URL: string = 'http://localhost:3000'
-
   path = ''
 
   constructor(path: string) {
@@ -11,7 +10,7 @@ export class Api {
   }
 
   private async baseFetch(method: string = 'GET', body: any = null): Promise<Response> {
-    return fetch(`${Api.BASE_URL}${this.path}`, {
+    return fetch(`${APP_URL}${this.path}`, {
       method,
       headers: body ? { 'Content-Type': 'application/json' } : undefined,
       body: body ? JSON.stringify(body) : undefined
