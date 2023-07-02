@@ -1,9 +1,8 @@
-'use client'
-
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Home from '@/icons/Home'
 import UserGroup from '@/icons/UserGroup'
+import Link from 'next/link'
 import Providers from './providers'
 import Navbar from './navbar'
 
@@ -18,16 +17,16 @@ const SideMenu: React.FC = () => (
         <span>Menu</span>
       </li>
       <li>
-        <a href="/">
+        <Link href="/">
           <Home height={24} width={24} />
           Home
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/users">
+        <Link href="/users">
           <UserGroup height={24} width={24} />
           Users
-        </a>
+        </Link>
       </li>
     </ul>
   </aside>

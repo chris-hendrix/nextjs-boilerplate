@@ -1,3 +1,6 @@
+'use client'
+
+import Link from 'next/link'
 import Image from 'next/image'
 import useSessionUser from '@/hooks/user'
 import { signIn, signOut } from 'next-auth/react'
@@ -6,13 +9,20 @@ import React from 'react'
 const LoginButtons: React.FC = () => {
   const { user, isLoading } = useSessionUser()
 
-  if (isLoading) return <></>
-  if (!user) {
-    return <ul className="menu menu-horizontal px-1">
-      <li><a className="btn btn-secondary mr-3 flex content-center" onClick={() => signIn()}>Log in</a></li>
-        <li><a className="btn btn-accent content-center" href="/signup" >Sign up</a></li>
-      </ul>
+  const renderUserLinks = () => {
+    if (user) {
+      return <>
+        <li><Link href="/profile">Profile</Link></li>
+        <li><a onClick={() => signOut()}>Logout</a></li>
+      </>
+    }
+    return <>
+      <li><a onClick={() => signIn()}>Log in</a></li>
+      <li><Link href="/signup" >Sign up</Link></li>
+    </>
   }
+
+  if (isLoading) return <></>
 
   return (
       <>
@@ -22,8 +32,7 @@ const LoginButtons: React.FC = () => {
           </div>
         </label>
         <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-52 text-primary">
-          <li><a href="/profile">Profile</a></li>
-        <li><a onClick={() => signOut()}>Logout</a></li>
+        {renderUserLinks()}
         </ul>
       </>
   )
