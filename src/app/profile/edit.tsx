@@ -4,13 +4,14 @@ import { useForm } from 'react-hook-form'
 import { useUpdateUserMutation } from '@/store'
 import Alert from '@/components/Alert'
 import TextInput from '@/components/TextInput'
+import Modal from '@/components/Modal'
 
 interface Props {
   user: Partial<User>;
-  onClose: () => void;
+  setOpen: (open: boolean) => void;
 }
 
-const EditProfile: React.FC<Props> = ({ user, onClose }) => {
+const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   const [updateUser, { isLoading, isSuccess, error }] = useUpdateUserMutation()
   const form = useForm({ mode: 'onChange' })
 
@@ -30,7 +31,7 @@ const EditProfile: React.FC<Props> = ({ user, onClose }) => {
 
   if (!user) return <></>
   return (
-    <div className="">
+    <Modal title="Edit profile" setOpen={setOpen}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="name" form={form} disabled={isLoading} />
         <TextInput name="username" form={form} disabled={isLoading} />
@@ -48,7 +49,7 @@ const EditProfile: React.FC<Props> = ({ user, onClose }) => {
             <button
               type="button"
               className="btn btn-secondary w-24"
-              onClick={onClose}
+              onClick={() => setOpen(false)}
               disabled={isLoading}
             >
               Close
@@ -58,8 +59,9 @@ const EditProfile: React.FC<Props> = ({ user, onClose }) => {
       </form>
       {error && <div className="mt-2"><Alert error={error} /></div>}
       {isSuccess && <div className="mt-2"><Alert message="Saved!" type="success" /></div>}
-    </div>
+    </Modal>
+
   )
 }
 
-export default EditProfile
+export default EditProfileModal

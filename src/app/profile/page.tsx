@@ -4,15 +4,11 @@ import Image from 'next/image'
 import { useState } from 'react'
 import useSessionUser from '@/hooks/user'
 import { formatDate } from '@/lib/date'
-import Modal from '@/components/Modal'
-import EditProfile from './edit'
+import EditProfileModal from './edit'
 
 const Profile = () => {
   const { user, isLoading } = useSessionUser()
-  const [showModal, setShowModal] = useState(false)
-
-  const handleOpenModal = () => setShowModal(true)
-  const handleCloseModal = () => setShowModal(false)
+  const [modalOpen, setModalOpen] = useState(false)
 
   if (!user && isLoading) return <>TODO</>
   return (
@@ -30,7 +26,7 @@ const Profile = () => {
             </div>
           )}
         </div>
-        <button className="btn btn-primary" onClick={handleOpenModal}>
+        <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
           Edit Profile
         </button>
       </div>
@@ -68,12 +64,7 @@ const Profile = () => {
         </ul>
       </div>
       </div>
-      {showModal && user && <Modal
-        title="Edit profile"
-        onClose={handleCloseModal}
-      >
-        <EditProfile user={user} onClose={handleCloseModal} />
-      </Modal>}
+      {modalOpen && user && <EditProfileModal user={user} setOpen={setModalOpen} />}
     </main>
   )
 }
