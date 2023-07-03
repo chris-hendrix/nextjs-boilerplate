@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
+import { useUpdateUserMutation } from '@/store'
+import Alert from '@/components/Alert'
 import TextInput from '@/components/TextInput'
 
 interface Props {
@@ -8,19 +10,21 @@ interface Props {
 }
 
 const EditProfile: React.FC<Props> = ({ user }) => {
-  const initialFormData = {
-    name: user.name,
-    username: user.username,
-    email: user.email,
-    about: 'TODO',
-  }
-  const isLoading = false // TODO
+  const [updateUser, { isLoading, isSuccess, error }] = useUpdateUserMutation()
   const form = useForm({ mode: 'onChange' })
 
-  const onSubmit = () => console.log('TODO')
+  const onSubmit = async (data: { [x: string]: unknown }) => {
+    await updateUser({ id: user.id, ...data, about: undefined }) // TODO
+  }
 
   useEffect(() => {
-    user && form.reset(initialFormData)
+    // initial form data
+    form.reset({
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      about: 'TODO',
+    })
   }, [])
 
   if (!user) return <></>
@@ -32,15 +36,27 @@ const EditProfile: React.FC<Props> = ({ user }) => {
         <TextInput name="email" form={form} disabled={isLoading} />
         <TextInput name="about" form={form} disabled={isLoading} />
         <div className="flex justify-end mt-4">
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={!form.formState.isValid || isLoading}
-          >
-            Save
-          </button>
+          <div className="space-x-2">
+            <button
+              type="submit"
+              className="btn btn-primary w-24"
+              disabled={!form.formState.isValid || isLoading}
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary w-24"
+              onClick={() => { }}
+              disabled={isLoading}
+            >
+              Close
+            </button>
+          </div>
         </div>
       </form>
+      {error && <div className="mt-2"><Alert error={error} /></div>}
+      {isSuccess && <div className="mt-2"><Alert message="Saved!" type="success" /></div>}
     </div>
   )
 }

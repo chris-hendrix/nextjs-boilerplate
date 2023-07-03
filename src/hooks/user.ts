@@ -1,10 +1,10 @@
 import { useGetSessionQuery, useGetUserQuery } from '@/store'
 
 const useSessionUser = () => {
-  const { data: session, isLoading } = useGetSessionQuery()
+  const { data: session, isLoading: isSessionLoading } = useGetSessionQuery()
   const userId = session?.user?.id
-  useGetUserQuery(userId || '', { skip: isLoading || !userId })
-  return { user: session?.user, isLoading }
+  const { data: user, isLoading } = useGetUserQuery(userId || '', { skip: isSessionLoading || !userId })
+  return { user, isLoading }
 }
 
 export default useSessionUser

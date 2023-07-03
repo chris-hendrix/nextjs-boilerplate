@@ -26,7 +26,7 @@ const Profile = () => {
             <div>
               <h3 className="text-2xl font-medium">{user?.name}</h3>
               <p className="text-gray-500">{user?.username}</p>
-              <p className="text-gray-500">{`Joined on ${formatDate(user.createdAt)}`}</p>
+              <p className="text-gray-500">{`Joined on ${formatDate(String(user.createdAt))}`}</p>
             </div>
           )}
         </div>
@@ -68,7 +68,7 @@ const Profile = () => {
         </ul>
       </div>
       </div>
-      {showModal && <Modal
+      {showModal && user && <Modal
         title="Edit profile"
         onClose={handleCloseModal}
       >

@@ -4,9 +4,25 @@ import prisma from '@/lib/prisma'
 import { generateHash } from '@/utils/hash'
 import { ApiError, routeWrapper } from '@/utils/api'
 
-export const sanitizeSelect = () => {
+export const sanitizeUserSelect = () => {
   const fields = Object.keys(Prisma.UserScalarFieldEnum)
   return Object.fromEntries(fields.map((k) => [k, k !== 'password']))
+}
+
+export const checkUserBody = async (body: any, id: string | null = null) => {
+  const usernameExists = async (username: string) => {
+    const user = await prisma.user.findUnique({ where: { username } })
+    return user && user.id !== id
+  }
+  const emailExists = async (email: string) => {
+    const user = await prisma.user.findUnique({ where: { email } })
+    return user && user.id !== id
+  }
+
+  if (!body) throw new ApiError('Request must have body', 400)
+  const { username, email } = body
+  if (email && await emailExists(email)) throw new ApiError('Email exists', 400)
+  if (username && await usernameExists(username)) throw new ApiError('Username exists', 400)
 }
 
 export const GET = routeWrapper(
@@ -16,7 +32,7 @@ export const GET = routeWrapper(
     const users = await prisma.user.findMany({
       skip: skip && take ? Number(skip) : undefined,
       take: skip && take ? Number(take) : undefined,
-      select: sanitizeSelect()
+      select: sanitizeUserSelect()
     })
     return NextResponse.json(users)
   }
@@ -24,15 +40,13 @@ export const GET = routeWrapper(
 
 export const POST = routeWrapper(async (req: NextRequest) => {
   const body = await req.json()
-  if (!body) throw new ApiError('Request must have body', 400)
+  checkUserBody(body)
+
   const { username, email, password } = body
-  if (await prisma.user.findUnique({ where: { email } })) {
-    throw new ApiError('Email exists', 400)
-  }
   const hash = await generateHash(password)
   const user = await prisma.user.create({
     data: { username, email, password: hash },
-    select: sanitizeSelect()
+    select: sanitizeUserSelect()
   })
   return NextResponse.json(user)
 })
