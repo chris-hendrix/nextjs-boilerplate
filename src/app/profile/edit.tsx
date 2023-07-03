@@ -7,9 +7,10 @@ import TextInput from '@/components/TextInput'
 
 interface Props {
   user: Partial<User>;
+  onClose: () => void;
 }
 
-const EditProfile: React.FC<Props> = ({ user }) => {
+const EditProfile: React.FC<Props> = ({ user, onClose }) => {
   const [updateUser, { isLoading, isSuccess, error }] = useUpdateUserMutation()
   const form = useForm({ mode: 'onChange' })
 
@@ -47,7 +48,7 @@ const EditProfile: React.FC<Props> = ({ user }) => {
             <button
               type="button"
               className="btn btn-secondary w-24"
-              onClick={() => { }}
+              onClick={onClose}
               disabled={isLoading}
             >
               Close

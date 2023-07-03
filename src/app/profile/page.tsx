@@ -72,7 +72,7 @@ const Profile = () => {
         title="Edit profile"
         onClose={handleCloseModal}
       >
-        <EditProfile user={user} />
+        <EditProfile user={user} onClose={handleCloseModal} />
       </Modal>}
     </main>
   )
