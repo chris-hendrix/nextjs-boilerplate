@@ -4,13 +4,15 @@ import Image from 'next/image'
 import { useState } from 'react'
 import useSessionUser from '@/hooks/user'
 import { formatDate } from '@/lib/date'
+import NotFound from '@/app/not-found'
 import EditProfileModal from './edit'
 
 const Profile = () => {
   const { user, isLoading } = useSessionUser()
   const [modalOpen, setModalOpen] = useState(false)
+  console.log({ user, isLoading })
 
-  if (!user && isLoading) return <>TODO</>
+  if (!user && !isLoading) return <NotFound />
   return (
     <main className="px-6 py-4">
       <div className="flex items-center justify-between bg-base-200 rounded-box p-4">
