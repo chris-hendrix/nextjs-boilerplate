@@ -32,5 +32,3 @@ export const PUT = routeWrapper(
     return NextResponse.json(updatedUser)
   }
 )
-
-export default GET
