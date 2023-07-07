@@ -1,0 +1,55 @@
+name: Pipeline
+
+on:
+  push:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:latest
+
+    env:
+      # database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOSTNAME: postgres
+      POSTGRES_PORT: 5432
+      # next-auth
+      SECRET:  nextAuthSecret
+      # host
+      PROTOCOL: http
+      HOSTNAME: localhost
+      PORT: 3000
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Expand env variables
+        run: |
+          echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOSTNAME:$POSTGRES_PORT/$POSTGRES_DB?schema=public" >> $GITHUB_ENV
+          echo "NEXTAUTH_URL=$PROTOCOL://$HOSTNAME:$PORT" >> $GITHUB_ENV
+          echo "CYPRESS_BASE_URL=$PROTOCOL://$HOSTNAME:$PORT" >> $GITHUB_ENV
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Migrate prisma schema
+        run: npm run migrate
+      - name: Run lint
+        run: npm run lint
+      - name: Run jest tests
+        run: npm run jest
