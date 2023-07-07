@@ -11,14 +11,19 @@ type Props = {
 const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
   const { register, getValues, formState: { errors } } = form
 
-  let inputProps = { label: '', type: 'text', disabled }
+  let inputProps = {
+    label: name.charAt(0).toUpperCase() + name.slice(1),
+    type: 'text',
+    disabled,
+    ...!register ? {} : register(name)
+  }
 
   if (name === 'username') {
     inputProps = {
       ...inputProps,
       label: 'Username*',
       ...!register ? {} : register(name, {
-        required: 'Name is required',
+        required: 'Username is required',
         validate: (value: string) => value.length > 2 || 'Too short'
       })
     }
@@ -63,7 +68,7 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
       {inputProps.label}
     </label>
     <input
-      className={`input input-bordered mb-1 ${errors?.[name] ? 'input-error' : ''}`}
+      className={`input input-bordered mb-1 w-full ${errors?.[name] ? 'input-error' : ''}`}
       {...inputProps}
     />
     <span className="block h-1 text-sm text-red-500">{errors?.[name]?.message as string || ''}</span>

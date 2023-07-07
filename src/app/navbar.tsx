@@ -1,10 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import useSessionUser from '@/hooks/user'
 import { signIn, signOut } from 'next-auth/react'
-import React from 'react'
+import Avatar from '@/components/Avatar'
 
 const LoginButtons: React.FC = () => {
   const { user, isLoading } = useSessionUser()
@@ -25,30 +24,28 @@ const LoginButtons: React.FC = () => {
   if (isLoading) return <></>
 
   return (
-      <>
-        <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-          <div className="w-10 rounded-full">
-            <Image src="/avatar.svg" alt="avatar.svg" fill />
-          </div>
-        </label>
-        <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-52 text-primary">
+    <>
+      <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+        <Avatar user={user} />
+      </label>
+      <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-52 text-primary">
         {renderUserLinks()}
-        </ul>
-      </>
+      </ul>
+    </>
   )
 }
 
 const Navbar: React.FC = () => (
-    <nav className="navbar bg-primary text-primary-content">
-      <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl" href="/">Next.js Boilerplate</a>
-      </div>
-      <div className="flex-none">
-        <div className="dropdown dropdown-end">
+  <nav className="navbar bg-primary text-primary-content">
+    <div className="flex-1">
+      <a className="btn btn-ghost normal-case text-xl" href="/">Next.js Boilerplate</a>
+    </div>
+    <div className="flex-none">
+      <div className="dropdown dropdown-end">
         <LoginButtons />
-        </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 )
 
 export default Navbar

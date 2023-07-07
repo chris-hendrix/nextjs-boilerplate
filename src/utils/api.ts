@@ -66,14 +66,10 @@ export const withSessionUser = async (
   return session?.user
 }
 
-export const withUserMatchingSession = async (
-  userId: string | undefined,
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
+export const withUserMatchingSession = async (userId: string | undefined) => {
   const [user, session] = await Promise.all([
     userId && await prisma.user.findUnique({ where: { id: userId } }),
-    await getServerSession(req, res, authOptions)
+    await getServerSession(authOptions)
   ])
   if (!user) throw new ApiError('User does not exist', 400)
   if (session?.user?.id !== userId) throw new ApiError('Unauthorized', 401)
