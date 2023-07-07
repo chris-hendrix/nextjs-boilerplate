@@ -15,9 +15,9 @@ const UserCard: React.FC<{ user: Partial<User> }> = ({ user }) => (
         <p className="text-gray-500">{`Joined on ${formatDate(String(user.createdAt))}`}</p>
       </div>
     </div>
-    <button className="btn btn-sm btn-primary">
+    <a href={`/users/${user.id}`} className="btn btn-sm btn-primary">
       View Profile
-    </button>
+    </a>
   </div>
 )
 
