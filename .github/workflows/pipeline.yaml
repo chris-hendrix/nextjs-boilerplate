@@ -59,8 +59,5 @@ jobs:
       - name: Build app
         run: npm run build
 
-      - name: Start app
-        run: (npm run start&) || sleep 10
-          
       - name: Run jest tests
-        run: npm run jest
+        run: (npm run start&) && npm run jest
