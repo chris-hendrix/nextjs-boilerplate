@@ -11,7 +11,7 @@
     "up": "docker-compose -f docker-compose.yml up -d && docker-compose logs -f",
     "down": "docker-compose -f docker-compose.yml down",
     "devup": "next dev && npm run up",
-    "jest": "NODE_ENV=test jest --config=jest/jest.config.ts --runInBand --forceExit"
+    "jest": "NODE_ENV=test jest --config=test/jest/jest.config.ts --runInBand --forceExit"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
