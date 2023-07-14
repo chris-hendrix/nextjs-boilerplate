@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Api, Cleaner } from '../utils'
+import { Api, Cleaner } from './utils'
 
 describe('/api/users', () => {
   const usersApi = new Api('/api/users')
