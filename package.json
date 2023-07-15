@@ -11,7 +11,9 @@
     "up": "docker-compose -f docker-compose.yml up -d && docker-compose logs -f",
     "down": "docker-compose -f docker-compose.yml down",
     "devup": "next dev && npm run up",
-    "jest": "NODE_ENV=test jest --config=test/jest/jest.config.ts --runInBand --forceExit"
+    "jest": "NODE_ENV=test jest --config=test/jest/jest.config.ts --runInBand --forceExit",
+    "cypress:open": "cypress open --config-file test/cypress/cypress.config.ts",
+    "cypress": "cypress run --config-file test/cypress/cypress.config.ts"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
@@ -27,6 +29,7 @@
     "@typescript-eslint/parser": "^5.60.1",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
+    "cypress": "^12.17.1",
     "daisyui": "^3.1.7",
     "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",

@@ -61,3 +61,10 @@ jobs:
 
       - name: Run jest tests
         run: (npm run start&) && npm run jest
+
+      - name: Run cypress tests
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run start
+          wait-on: http://localhost:3000
+          config-file: test/cypress/cypress.config.ts

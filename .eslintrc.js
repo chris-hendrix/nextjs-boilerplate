@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    'cypress/globals': true
   },
   extends: [
     'next/core-web-vitals',
