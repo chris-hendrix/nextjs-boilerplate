@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { createRequest, RequestMethod } from 'node-mocks-http'
 import prisma from '@/lib/prisma'
 

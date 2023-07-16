@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+import prisma from '@/lib/prisma'
 import { GET as getUsers, POST as postUser } from '@/app/api/users/route'
 import { PUT as putUser } from '@/app/api/users/[id]/route'
 import { Cleaner, createNextRequest } from '../utils'
@@ -52,5 +52,19 @@ describe('/api/users', () => {
     expect(data).toEqual(
       expect.objectContaining({ username: body.username }),
     )
+  })
+
+  test('user cannot edit different user', async () => {
+    await createGetServerSessionMock()
+    const body = { name: 'Put Adams' }
+    const otherUser = await prisma.user.create({
+      data: {
+        username: 'other-adams',
+        email: `other-adams-${new Date().getTime()}@email.com`
+      }
+    })
+    const req = createNextRequest({ method: 'PUT', body })
+    const res = await putUser(req, { params: { id: otherUser.id } })
+    expect(res.status).toBe(401)
   })
 })

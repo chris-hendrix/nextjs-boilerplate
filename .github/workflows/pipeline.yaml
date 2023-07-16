@@ -56,10 +56,10 @@ jobs:
       - name: Run lint
         run: npm run lint
 
-      - name: Run jest tests
+      - name: Run Jest tests
         run: npm run jest
 
-      - name: Run cypress tests
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v5
         with:
           build: npm run build
