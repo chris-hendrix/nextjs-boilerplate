@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
-import prisma from '@/lib/prisma'
 import authOptions from '@/lib/auth'
 
 export class ApiError extends Error {
@@ -57,20 +55,7 @@ export const routeWrapper = (
   }
 }
 
-export const withSessionUser = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
-  const session = await getServerSession(req, res, authOptions)
-  if (!session) throw new ApiError('Unauthorized', 401)
-  return session?.user
-}
-
-export const withUserMatchingSession = async (userId: string | undefined) => {
-  const [user, session] = await Promise.all([
-    userId && await prisma.user.findUnique({ where: { id: userId } }),
-    await getServerSession(authOptions)
-  ])
-  if (!user) throw new ApiError('User does not exist', 400)
+export const checkUserMatchesSession = async (userId: string | undefined) => {
+  const session = await getServerSession(authOptions)
   if (session?.user?.id !== userId) throw new ApiError('Unauthorized', 401)
 }

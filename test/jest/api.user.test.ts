@@ -1,29 +1,51 @@
 /* eslint-disable no-underscore-dangle */
-import { Api, Cleaner } from '../utils'
+import { GET as getUsers, POST as postUser } from '@/app/api/users/route'
+import { PUT as putUser } from '@/app/api/users/[id]/route'
+import { Cleaner, createNextRequest } from '../utils'
+import { createGetServerSessionMock } from './mocks'
+
+jest.mock('next-auth')
 
 describe('/api/users', () => {
-  const usersApi = new Api('/api/users')
   const cleaner = new Cleaner()
+
+  const createUserBody = () => {
+    const datetime = new Date().getTime()
+    return {
+      name: `Patch Adams ${datetime}`,
+      username: `patch-adams-${datetime}`,
+      email: `patch-adams-${datetime}@email.com`,
+      password: '12341234'
+    }
+  }
 
   afterAll(async () => {
     await cleaner.deleteUsers()
   })
 
   test('users can be retrieved', async () => {
-    const res = await usersApi.get()
+    const req = createNextRequest()
+    const res = await getUsers(req)
     expect(res.status).toBe(200)
   })
 
   test('user can signup with username and password', async () => {
-    const datetime = new Date().getTime()
-    const body = {
-      name: `Patch Adams ${datetime}`,
-      username: `patch-adams-${datetime}`,
-      email: `patch-adams-${datetime}@email.com`,
-      password: '12341234'
-    }
+    const body = createUserBody()
+    const req = createNextRequest({ method: 'POST', body })
+    const res = await postUser(req)
+    expect(res.status).toBe(200)
 
-    const res = await usersApi.post(body)
+    const data = await res.json()
+    expect(data).toEqual(
+      expect.objectContaining({ username: body.username }),
+    )
+  })
+
+  test('user can edit same user', async () => {
+    const user = await createGetServerSessionMock()
+    const body = { username: `put-adams-${new Date().getTime()}` }
+    const req = createNextRequest({ method: 'PUT', body })
+    const res = await putUser(req, { params: { id: user.id } })
     expect(res.status).toBe(200)
 
     const data = await res.json()

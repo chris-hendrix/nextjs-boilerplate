@@ -1,25 +1,29 @@
 /* eslint-disable max-classes-per-file */
+import { createRequest, RequestMethod } from 'node-mocks-http'
 import prisma from '@/lib/prisma'
-import { APP_URL } from '@/config'
 
-export class Api {
-  path = ''
+type CreateNextRequest = {
+  method?: RequestMethod | undefined
+  body?: any | undefined
+  searchParams?: { [key: string]: string | number } | undefined
+}
 
-  constructor(path: string) {
-    this.path = path
+const defaultOptions = {
+  method: 'GET' as RequestMethod,
+  body: undefined,
+  searchParams: undefined
+}
+
+export const createNextRequest = (options: CreateNextRequest = defaultOptions) => {
+  const { method, body, searchParams } = options
+  const req = createRequest({ method })
+  req.json = () => Promise.resolve(body)
+  req.nextUrl = {
+    searchParams: new URLSearchParams(
+      Object.entries(searchParams || {}).map(([key, value]) => [key, value.toString()])
+    )
   }
-
-  private async baseFetch(method: string = 'GET', body: any = null): Promise<Response> {
-    return fetch(`${APP_URL}${this.path}`, {
-      method,
-      headers: body ? { 'Content-Type': 'application/json' } : undefined,
-      body: body ? JSON.stringify(body) : undefined
-    })
-  }
-
-  public async get() { return this.baseFetch() }
-
-  public async post(body: any) { return this.baseFetch('POST', body) }
+  return req
 }
 
 export class Cleaner {
@@ -36,5 +40,3 @@ export class Cleaner {
     })
   }
 }
-
-export default Api

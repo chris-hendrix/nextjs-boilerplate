@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { ApiError, routeWrapper, withUserMatchingSession as checkUserMatchesSession } from '@/utils/api'
+import { ApiError, routeWrapper, checkUserMatchesSession } from '@/utils/api'
 import { checkUserBody, sanitizeUserSelect } from '../route'
 
 export const GET = routeWrapper(
