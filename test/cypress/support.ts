@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-type User = { name: string, email: string, password: string }
+type User = { username: string, email: string, password: string }
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -11,7 +11,7 @@ declare global {
 }
 
 export const createNewUser = () => ({
-  name: `Patch Adams ${new Date().getTime()}`,
+  username: `Patch Adams ${new Date().getTime()}`,
   email: `patch-adams-${new Date().getTime()}@email.com`,
   password: 'Abcd1234!'
 })
@@ -26,7 +26,7 @@ export const defaultMessage = createNewMessage()
 Cypress.Commands.add('signUpUser', (user = defaultUser) => {
   cy.visit('/signup')
   cy.get('[class~="signUpWithEmailButton"').click()
-  cy.get('input[name="name"]').type(user.name)
+  cy.get('input[name="username"]').type(user.username)
   cy.get('input[name="email"]').type(user.email)
   cy.get('input[name="password"]').type(user.password)
   cy.get('input[name="cpassword"]').type(user.password)

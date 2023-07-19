@@ -1,5 +1,4 @@
 import { createRequest, RequestMethod } from 'node-mocks-http'
-import prisma from '@/lib/prisma'
 
 type CreateNextRequest = {
   method?: RequestMethod | undefined
@@ -25,17 +24,12 @@ export const createNextRequest = (options: CreateNextRequest = defaultOptions) =
   return req
 }
 
-export class Cleaner {
-  startTime: Date
-
-  constructor() {
-    this.startTime = new Date()
-  }
-
-  public async deleteUsers() {
-    const endTime = new Date()
-    await prisma.user.deleteMany({
-      where: { createdAt: { gte: this.startTime, lte: endTime } }
-    })
+export const createUserBody = () => {
+  const datetime = new Date().getTime()
+  return {
+    name: `Patch Adams ${datetime}`,
+    username: `patch-adams-${datetime}`,
+    email: `patch-adams-${datetime}@email.com`,
+    password: 'Abcd1234!'
   }
 }

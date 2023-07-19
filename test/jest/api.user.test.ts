@@ -1,23 +1,14 @@
 import prisma from '@/lib/prisma'
 import { GET as getUsers, POST as postUser } from '@/app/api/users/route'
 import { PUT as putUser } from '@/app/api/users/[id]/route'
-import { Cleaner, createNextRequest } from '../utils'
+import Cleaner from '../cleaner'
+import { createNextRequest, createUserBody } from '../utils'
 import { createGetServerSessionMock } from './mocks'
 
 jest.mock('next-auth')
 
 describe('/api/users', () => {
   const cleaner = new Cleaner()
-
-  const createUserBody = () => {
-    const datetime = new Date().getTime()
-    return {
-      name: `Patch Adams ${datetime}`,
-      username: `patch-adams-${datetime}`,
-      email: `patch-adams-${datetime}@email.com`,
-      password: '12341234'
-    }
-  }
 
   afterAll(async () => {
     await cleaner.deleteUsers()
