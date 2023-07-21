@@ -50,6 +50,7 @@ export const routeWrapper = (
       message: getErrorMessage(error.message),
       statusCode: error.statusCode,
     }
+    console.log('error')
     logError(response)
     return NextResponse.json(response, { status: error.statusCode || 500 })
   }

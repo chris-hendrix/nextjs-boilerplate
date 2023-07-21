@@ -1,23 +1,31 @@
 /// <reference types="cypress" />
-import { createUserBody } from '../../utils'
 
 describe('User tests', () => {
   let startTime: Date | null = null
 
-  beforeEach(() => { startTime = new Date() })
+  before(() => { startTime = new Date() })
 
-  afterEach(() => { cy.task('deleteUsers', startTime) })
+  after(() => { cy.task('deleteUsers', startTime) })
 
-  it('User can sign up', () => {
-    const user = createUserBody()
+  it('User can sign up, sign in, and logout', () => {
+    // signup
     cy.visit('/')
-    cy.get('[class~="btn-circle"').click()
-    cy.contains('a', 'Sign up').click()
-    cy.get('input[name="username"]').type(user.username)
-    cy.get('input[name="email"]').type(user.email)
-    cy.get('input[name="password"]').type(user.password)
-    cy.get('input[name="cpassword"]').type(user.password)
-    cy.contains('button', 'Sign up').click()
+    cy.signUpUser()
     cy.url().should('eq', `${Cypress.config().baseUrl}/`)
+
+    // login
+    cy.loginUser()
+    cy.url().should('not.contain', '/api')
+
+    // logout
+    cy.logoutUser()
+    cy.get('[class~="btn-circle"').click()
+    cy.contains('a', 'Log in')
+  })
+
+  it('User cannot sign up twice', () => {
+    cy.visit('/')
+    cy.signUpUser() // same user as previous test
+    cy.url().should('eq', `${Cypress.config().baseUrl}/signup`)
   })
 })

@@ -12,7 +12,8 @@ const Signup: React.FC = () => {
   const [addUser, { isLoading, error }] = useAddUserMutation()
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
-    await addUser(data)
+    const resp = await addUser(data)
+    if ('error' in resp) return
     router.push('/')
   }
 
