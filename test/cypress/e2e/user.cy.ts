@@ -1,11 +1,7 @@
 /// <reference types="cypress" />
 
 describe('User tests', () => {
-  let startTime: Date | null = null
-
-  before(() => { startTime = new Date() })
-
-  after(() => { cy.task('deleteUsers', startTime) })
+  after(() => { cy.task('deleteTestUsers') })
 
   it('User can sign up, sign in, and logout', () => {
     // signup

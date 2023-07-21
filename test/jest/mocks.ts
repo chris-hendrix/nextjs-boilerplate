@@ -1,12 +1,12 @@
 import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
+import { generateUserBody } from '../utils'
 
 jest.mock('next-auth') // must be imported in test file as well
 
 export const createGetServerSessionMock = async () => {
-  const username = `patch-adams-${new Date().getTime()}`
   const user = await prisma.user.create({
-    data: { username, email: `${username}@email.com` }
+    data: generateUserBody()
   })
   const mockGetServerSession = getServerSession as jest.Mock
   mockGetServerSession.mockReturnValueOnce(Promise.resolve({

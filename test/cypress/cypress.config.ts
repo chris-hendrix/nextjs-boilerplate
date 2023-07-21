@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress'
-import Cleaner from '../cleaner'
+import { deleteTestUsers } from '../utils'
 
 const cypressConfig = defineConfig({
   e2e: {
@@ -11,7 +11,7 @@ const cypressConfig = defineConfig({
     specPattern: 'test/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     setupNodeEvents(on, _config) {
       on('task', {
-        deleteUsers: async (startTime: Date) => new Cleaner(startTime).deleteUsers(),
+        deleteTestUsers: async () => deleteTestUsers(),
       })
     },
   },

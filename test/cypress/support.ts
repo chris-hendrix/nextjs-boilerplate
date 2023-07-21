@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { TEST_SECRET } from '../../src/config'
+
 type User = { username: string, email: string, password: string }
 declare global {
   namespace Cypress {
@@ -11,8 +13,8 @@ declare global {
 }
 
 export const createNewUser = () => ({
-  username: `patch-adams-${new Date().getTime()}`,
-  email: `patch-adams-${new Date().getTime()}@email.com`,
+  username: `${TEST_SECRET}-patch-adams-${new Date().getTime()}`,
+  email: `${TEST_SECRET}-patch-adams-${new Date().getTime()}@email.com`,
   password: 'Abcd1234!'
 })
 
