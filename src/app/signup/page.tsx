@@ -9,13 +9,11 @@ import Alert from '@/components/Alert'
 const Signup: React.FC = () => {
   const form = useForm({ mode: 'onChange' })
   const router = useRouter()
-  const [addUser, { isLoading, error }] = useAddUserMutation()
+  const [addUser, { isLoading, isSuccess, error }] = useAddUserMutation()
 
-  const onSubmit = async (data: { [x: string]: unknown }) => {
-    const resp = await addUser(data)
-    if ('error' in resp) return
-    router.push('/')
-  }
+  const onSubmit = async (data: { [x: string]: unknown }) => addUser(data)
+
+  if (isSuccess) router.push('/api/auth/signin')
 
   return (
     <div className="flex items-center justify-center">
@@ -29,8 +27,8 @@ const Signup: React.FC = () => {
           <button type="submit" className="btn btn-primary w-full">
             Sign up
           </button>
-          {error && <div className="mt-2"><Alert error={error} /></div>}
         </form>
+        {error && <div className="mt-2"><Alert error={error} /></div>}
       </div>
     </div>
   )

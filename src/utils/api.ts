@@ -45,12 +45,12 @@ export const routeWrapper = (
     const result = await routeHandler(req, context)
     return result
   } catch (error: any) {
+    console.log({ error })
     const response = {
       ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
       message: getErrorMessage(error.message),
       statusCode: error.statusCode,
     }
-    console.log('error')
     logError(response)
     return NextResponse.json(response, { status: error.statusCode || 500 })
   }
