@@ -1,9 +1,10 @@
 import { defineConfig } from 'cypress'
 import { deleteTestUsers } from '../utils'
+import { APP_URL, TEST_SECRET } from '../../src/config'
 
 const cypressConfig = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: APP_URL,
     video: false,
     screenshotOnRunFailure: false,
     downloadsFolder: 'test/cypress/download',
@@ -14,6 +15,7 @@ const cypressConfig = defineConfig({
         deleteTestUsers: async () => deleteTestUsers(),
       })
     },
+    env: { TEST_SECRET },
   },
 })
 

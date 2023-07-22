@@ -7,15 +7,17 @@ describe('User tests', () => {
     // signup
     cy.visit('/')
     cy.signUpUser()
-    cy.url().should('eq', `${Cypress.config().baseUrl}/`)
+    cy.url().should('eq', `${Cypress.config().baseUrl}/api/auth/signin`)
 
     // login
+    cy.visit('/')
     cy.loginUser()
     cy.url().should('not.contain', '/api')
 
     // logout
     cy.logoutUser()
     cy.get('[class~="btn-circle"').click()
+    cy.wait(500)
     cy.contains('a', 'Log in')
   })
 

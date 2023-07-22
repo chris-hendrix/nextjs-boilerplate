@@ -18,14 +18,13 @@ export const PUT = routeWrapper(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
     const { id } = params
     if (!id) throw new ApiError('User id required', 400)
-    const body = await req.json()
 
-    await checkUserBody(body, id)
+    await checkUserBody(req.jsonBody, id)
     await checkUserMatchesSession(id)
 
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: body,
+      data: req.jsonBody,
       select: sanitizeUserSelect()
     })
 
