@@ -33,10 +33,12 @@ const Alert: React.FC<Props> = ({ message = null, error = null, type = 'normal',
   if (!alertMessage) return null
   if (!showAlert) return null
 
-  return <div className={`alert ${alertType !== 'normal' ? `alert-${alertType}` : ''}`}>
-    {ICONS[alertType]}
-    <span>{alertMessage}</span>
-  </div>
+  return (
+    <div className={`alert ${alertType !== 'normal' ? `alert-${alertType}` : ''}`}>
+      {ICONS[alertType]}
+      <span>{alertMessage}</span>
+    </div>
+  )
 }
 
 export default Alert

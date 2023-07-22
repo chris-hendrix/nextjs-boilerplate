@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
-import prisma from '@/lib/prisma'
 import authOptions from '@/lib/auth'
 
 export class ApiError extends Error {
@@ -17,13 +15,21 @@ export class ApiError extends Error {
   }
 }
 
+const sanitizeBody = (jsonBody: any) => {
+  const sanitizedText = '*****'
+  const sanitizedBody = { ...jsonBody }
+  if ('password' in sanitizedBody) sanitizedBody.password = sanitizedText
+  if ('cpassword' in sanitizedBody) sanitizedBody.cpassword = sanitizedText
+  return sanitizedBody
+}
+
 const logRequest = (req: NextRequest) => {
   if (process.env.NODE_ENV === 'test') return
-  const { method, url, body } = req
+  const { method, url, jsonBody } = req
   console.info('---')
   method && console.info(`Method: ${method}`)
   url && console.info(`Path:   ${url}`)
-  body && console.info(`Body:   ${JSON.stringify(body)}`)
+  jsonBody && console.info(`Body:   ${JSON.stringify(sanitizeBody(jsonBody))}`)
   console.info('---')
 }
 
@@ -43,6 +49,7 @@ export const routeWrapper = (
     req: NextRequest, context?: any) => Promise<NextResponse>
 ) => async (req: NextRequest, context?: any) => {
   try {
+    req.jsonBody = req.body && await req.json()
     logRequest(req)
     const result = await routeHandler(req, context)
     return result
@@ -57,20 +64,7 @@ export const routeWrapper = (
   }
 }
 
-export const withSessionUser = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
-  const session = await getServerSession(req, res, authOptions)
-  if (!session) throw new ApiError('Unauthorized', 401)
-  return session?.user
-}
-
-export const withUserMatchingSession = async (userId: string | undefined) => {
-  const [user, session] = await Promise.all([
-    userId && await prisma.user.findUnique({ where: { id: userId } }),
-    await getServerSession(authOptions)
-  ])
-  if (!user) throw new ApiError('User does not exist', 400)
+export const checkUserMatchesSession = async (userId: string | undefined) => {
+  const session = await getServerSession(authOptions)
   if (session?.user?.id !== userId) throw new ApiError('Unauthorized', 401)
 }

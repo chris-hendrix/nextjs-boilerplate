@@ -19,7 +19,7 @@ module.exports = {
     },
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json']
+    project: ['./tsconfig.json', './test/cypress/tsconfig.json']
   },
   plugins: [
     'react',

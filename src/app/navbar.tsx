@@ -9,10 +9,11 @@ const LoginButtons: React.FC = () => {
   const { user, isLoading } = useSessionUser()
 
   const renderUserLinks = () => {
+    if (isLoading) return null
     if (user) {
       return <>
         <li><Link href="/profile">Profile</Link></li>
-        <li><a onClick={() => signOut()}>Logout</a></li>
+        <li><a onClick={() => signOut()}>Log out</a></li>
       </>
     }
     return <>
@@ -20,8 +21,6 @@ const LoginButtons: React.FC = () => {
       <li><Link href="/signup" >Sign up</Link></li>
     </>
   }
-
-  if (isLoading) return <></>
 
   return (
     <>

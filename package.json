@@ -10,8 +10,10 @@
     "migrate": "npx prisma migrate dev --skip-seed",
     "up": "docker-compose -f docker-compose.yml up -d && docker-compose logs -f",
     "down": "docker-compose -f docker-compose.yml down",
-    "devup": "next dev && npm run up",
-    "jest": "NODE_ENV=test jest --config=jest/jest.config.ts --runInBand --forceExit"
+    "devtest": "NODE_ENV=test && next dev",
+    "jest": "NODE_ENV=test jest --config=test/jest/jest.config.ts --runInBand --forceExit --verbose",
+    "cypress:open": "cypress open --config-file test/cypress/cypress.config.ts",
+    "cypress": "cypress run --config-file test/cypress/cypress.config.ts"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
@@ -27,6 +29,7 @@
     "@typescript-eslint/parser": "^5.60.1",
     "autoprefixer": "10.4.14",
     "bcrypt": "^5.1.0",
+    "cypress": "^12.17.1",
     "daisyui": "^3.1.7",
     "eslint": "^8.44.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -35,6 +38,7 @@
     "jest": "^29.5.0",
     "next": "^13.4.7",
     "next-auth": "^4.22.1",
+    "node-mocks-http": "^1.12.2",
     "postcss": "^8.4.24",
     "prisma": "^4.16.2",
     "react": "^18.2.0",

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useAddUserMutation } from '@/store'
 import TextInput from '@/components/TextInput'
@@ -8,9 +8,15 @@ import Alert from '@/components/Alert'
 
 const Signup: React.FC = () => {
   const form = useForm({ mode: 'onChange' })
-  const [addUser, { isLoading, error }] = useAddUserMutation()
+  const router = useRouter()
+  const [addUser, { isLoading, isSuccess, error }] = useAddUserMutation()
 
-  const onSubmit = async (data: { [x: string]: unknown }) => { await addUser(data) }
+  const onSubmit = async (data: { [x: string]: string }) => {
+    const { username, email, password } = data
+    await addUser({ username, email, password })
+  }
+
+  if (isSuccess) router.push('/api/auth/signin')
 
   return (
     <div className="flex items-center justify-center">
@@ -22,10 +28,10 @@ const Signup: React.FC = () => {
           <TextInput name="password" form={form} disabled={isLoading} />
           <TextInput name="cpassword" form={form} disabled={isLoading} />
           <button type="submit" className="btn btn-primary w-full">
-            Sign Up
+            Sign up
           </button>
-          {error && <div className="mt-2"><Alert error={error} /></div>}
         </form>
+        {error && <div className="mt-2"><Alert error={error} /></div>}
       </div>
     </div>
   )

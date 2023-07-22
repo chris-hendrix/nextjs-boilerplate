@@ -11,3 +11,9 @@ declare module 'next-auth' {
     user: User | null
   }
 }
+
+declare module 'next/server' {
+  export interface NextRequest extends NextServer.NextRequest {
+    jsonBody: any | null = null
+  }
+}
