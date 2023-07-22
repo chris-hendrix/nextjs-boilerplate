@@ -44,6 +44,7 @@ DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOSTN
 npm run install
 npm migrate
 ```
+6. For [automatic tagging](https://github.com/anothrNick/github-tag-action), allow read and write permissions for workflows in your github repo's Settings > Actions > General > Workflow permissions section.
 
 ### Start locally
 The following command will containerize, build, and start the database, backend, and frontend
