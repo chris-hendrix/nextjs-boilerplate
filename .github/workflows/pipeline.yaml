@@ -66,3 +66,21 @@ jobs:
           start: npm run start
           wait-on: http://localhost:3000
           config-file: test/cypress/cypress.config.ts
+
+  tag:
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+
+      - name: Bump tag for main branch
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: minor  # change by including #major or #patch in merge commit message
+          RELEASE_BRANCHES: main
+          INITIAL_VERSION: '2023.0.0'
