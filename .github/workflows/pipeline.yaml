@@ -82,5 +82,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: minor  # change by including #major or #patch in merge commit message
-          RELEASE_BRANCHES: main
           INITIAL_VERSION: '2023.0.0'
