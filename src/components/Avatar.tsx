@@ -3,11 +3,11 @@ import { User } from '@prisma/client'
 
 interface Props {
   user?: Partial<User> | null
-  size?: number
+  size?: number | string
 }
 
-const Avatar: React.FC<Props> = ({ user = null }) => (
-  <div className="relative w-12 h-12 rounded-full">
+const Avatar: React.FC<Props> = ({ user = null, size = '24px' }) => (
+  <div style={{ width: size, height: size }} className="relative rounded-full">
     <Image src={user?.bucketImage || user?.image || '/avatar.svg'} alt="avatar.svg" fill />
   </div>
 )

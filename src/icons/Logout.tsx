@@ -4,7 +4,7 @@ import { SVGProps } from 'react'
 // https://heroicons.com/
 // https://react-svgr.com/playground/?typescript=true
 
-const Home = (props: SVGProps<SVGSVGElement>) => (
+const Logout = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -17,8 +17,8 @@ const Home = (props: SVGProps<SVGSVGElement>) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="m2.25 12 8.954-8.955a1.126 1.126 0 0 1 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
     />
   </svg>
 )
-export default Home
+export default Logout
