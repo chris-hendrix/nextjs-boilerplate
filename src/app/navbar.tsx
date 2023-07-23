@@ -4,7 +4,6 @@ import Link from 'next/link'
 import useSessionUser from '@/hooks/user'
 import { signIn, signOut } from 'next-auth/react'
 import Avatar from '@/components/Avatar'
-import { useSelectIsMenuOpen, dispatchIsMenuOpen } from '@/store'
 
 const LoginButtons: React.FC = () => {
   const { user, isLoading } = useSessionUser()
@@ -35,16 +34,8 @@ const LoginButtons: React.FC = () => {
   )
 }
 
-const Navbar: React.FC = () => {
-  const isMenuOpen = useSelectIsMenuOpen()
-
-  return (
+const Navbar: React.FC = () => (
   <nav className="navbar bg-primary text-primary-content">
-      <div className="navbar-start">
-        <button tabIndex={0} className="btn btn-ghost btn-circle" onClick={() => { dispatchIsMenuOpen(!isMenuOpen) }}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-        </button>
-      </div>
     <div className="flex-1">
       <a className="btn btn-ghost normal-case text-xl" href="/">Next.js Boilerplate</a>
     </div>
@@ -54,7 +45,6 @@ const Navbar: React.FC = () => {
       </div>
     </div>
   </nav>
-  )
-}
+)
 
 export default Navbar
