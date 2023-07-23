@@ -10,25 +10,29 @@ const inter = Inter({ subsets: ['latin'] })
 
 const MENU_WIDTH = 48
 
+const Links: React.FC = () => (
+  <ul className={`menu p-3 bg-base-200 h-full w-${MENU_WIDTH}`}>
+    <li className="menu-title">
+      <span>Menu</span>
+    </li>
+    <li>
+      <Link href="/">
+        <Home height={24} width={24} />
+        Home
+      </Link>
+    </li>
+    <li>
+      <Link href="/users">
+        <UserGroup height={24} width={24} />
+        Users
+      </Link>
+    </li>
+  </ul>
+)
+
 const SideMenu: React.FC = () => (
   <aside className={`bg-gray-800 text-primary w-${MENU_WIDTH}`}>
-    <ul className={`menu p-3 bg-base-200 h-full w-${MENU_WIDTH}`}>
-      <li className="menu-title">
-        <span>Menu</span>
-      </li>
-      <li>
-        <Link href="/">
-          <Home height={24} width={24} />
-          Home
-        </Link>
-      </li>
-      <li>
-        <Link href="/users">
-          <UserGroup height={24} width={24} />
-          Users
-        </Link>
-      </li>
-    </ul>
+    <Links />
   </aside>
 )
 
