@@ -12,7 +12,7 @@ Things that have been setup for you:
 - 💻 E2E testing using [Cypress](https://www.cypress.io/)
 - 🤡 Unit testing using [Jest](https://jestjs.io/)
 
-Note that SSR is not included in this boilerplate as it is not really applicable user authentication (which uses redux to update state). Feel free to add SSR to your own pages though!
+Note that [SSR](https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic-rendering) is not included in this boilerplate as it is not really applicable user authentication (which uses redux to update state). Feel free to add SSR to your own pages though!
 
 ### Services
 The services used in this project are:
