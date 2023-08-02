@@ -1,13 +1,13 @@
 'use client'
 
+import { redirect } from 'next/navigation'
 import useSessionUser from '@/hooks/user'
-import NotFound from '@/app/not-found'
 import Profile from '@/components/Profile'
 
 const ProfilePage = () => {
   const { user, isLoading } = useSessionUser()
 
-  if (!user && !isLoading) return <NotFound />
+  if (!user && !isLoading) return redirect('/')
   if (!user) return <></>
 
   return (

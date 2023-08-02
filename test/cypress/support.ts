@@ -7,7 +7,8 @@ declare global {
     interface Chainable {
       signUpUser: (user?: User) => void,
       loginUser: (user?: User) => void,
-      logoutUser: () => void
+      logoutUser: () => void,
+      openMenuAndClick: (linkText: string) => void
     }
   }
 }
@@ -20,9 +21,13 @@ export const createNewUser = () => ({
 
 export const defaultUser = createNewUser()
 
+Cypress.Commands.add('openMenuAndClick', (linkText) => {
+  cy.get('[id="menu-button"').click()
+  cy.get('[class~="dropdown-content"').contains(linkText).click()
+})
+
 Cypress.Commands.add('signUpUser', (user = defaultUser) => {
-  cy.get('[class~="btn-circle"').click()
-  cy.contains('a', 'Sign up').click()
+  cy.openMenuAndClick('Sign up')
   cy.get('input[name="username"]').type(user.username)
   cy.get('input[name="email"]').type(user.email)
   cy.get('input[name="password"]').type(user.password)
@@ -31,14 +36,10 @@ Cypress.Commands.add('signUpUser', (user = defaultUser) => {
 })
 
 Cypress.Commands.add('loginUser', (user = defaultUser) => {
-  cy.get('[class~="btn-circle"').click()
-  cy.contains('a', 'Log in').click()
+  cy.openMenuAndClick('Log in')
   cy.get('input[name="username"]').type(user.username)
   cy.get('input[name="password"]').type(user.password)
-  cy.contains('button', 'Sign in with Credentials').click()
+  cy.contains('button', 'Log in').click()
 })
 
-Cypress.Commands.add('logoutUser', () => {
-  cy.get('[class~="btn-circle"').click()
-  cy.contains('a', 'Log out').click()
-})
+Cypress.Commands.add('logoutUser', () => cy.openMenuAndClick('Log out'))

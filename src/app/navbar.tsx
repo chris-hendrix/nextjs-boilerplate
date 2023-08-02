@@ -1,9 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import useSessionUser from '@/hooks/user'
-import { signIn, signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import Avatar from '@/components/Avatar'
+import CredentialsModal from '@/components/CredentialsModal'
 
 import Home from '@/icons/Home'
 import UserGroup from '@/icons/UserGroup'
@@ -12,6 +14,8 @@ import Menu from '@/icons/Menu'
 
 const Dropdown: React.FC = () => {
   const { user, isLoading } = useSessionUser()
+  const [signupOpen, setSignupOpen] = useState(false)
+  const [loginOpen, setLoginOpen] = useState(false)
 
   const renderUserLinks = () => {
     if (isLoading) return null
@@ -22,15 +26,15 @@ const Dropdown: React.FC = () => {
       </>
     }
     return <>
-      <li><a onClick={() => signIn()}>Log in</a></li>
-      <li><Link href="/signup" >Sign up</Link></li>
+      <li><a onClick={() => setLoginOpen(true)}>Log in</a></li>
+      <li><a onClick={() => setSignupOpen(true)} >Sign up</a></li>
     </>
   }
 
   return (
     <div className="flex-none">
       <div className="dropdown dropdown-end">
-        <label tabIndex={0} className="btn btn-ghost avatar">
+        <label tabIndex={0} className="btn btn-ghost avatar" id="menu-button">
           <Menu />
           <Avatar user={user} />
       </label>
@@ -51,6 +55,8 @@ const Dropdown: React.FC = () => {
           </li>
       </ul>
       </div>
+      {signupOpen && <CredentialsModal setOpen={setSignupOpen} />}
+      {loginOpen && <CredentialsModal setOpen={setLoginOpen} login />}
     </div>
   )
 }
@@ -58,8 +64,8 @@ const Dropdown: React.FC = () => {
 const Navbar: React.FC = () => (
   <div className="navbar bg-primary text-primary-content">
     <div className="navbar-start" />
-    <div className="navbar-center">
-      <a className="btn btn-ghost normal-case text-xl"><Link href="/">Next.js Boilerplate</Link></a>
+    <div className="navbar-center text-xl">
+      <Link href="/">Next.js Boilerplate</Link>
     </div>
     <div className="navbar-end">
       <Dropdown />
