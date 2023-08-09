@@ -16,7 +16,14 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   const form = useForm({ mode: 'onChange' })
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
-    await updateUser({ id: user.id, ...data, about: undefined }) // TODO
+    const { name, username, email, about } = data
+    await updateUser({
+      id: user.id,
+      name,
+      username,
+      email,
+      info: { about }
+    })
   }
 
   useEffect(() => {
@@ -25,7 +32,7 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
       name: user.name,
       username: user.username,
       email: user.email,
-      about: 'TODO',
+      about: (user.info as any)?.about,
     })
   }, [])
 

@@ -29,5 +29,5 @@
     "test/cypress",
     "cypress.config.ts",
     "**/*.cy.ts"
-  ]
+  ],
 }
