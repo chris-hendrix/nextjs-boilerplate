@@ -11,9 +11,9 @@ const ProfilePage = () => {
   if (!user) return <></>
 
   return (
-    <main className="px-6 py-4">
+    <div className="w-full max-w-screen-sm">
       <Profile user={user} canEdit />
-    </main>
+    </div>
   )
 }
 

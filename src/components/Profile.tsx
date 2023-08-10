@@ -49,7 +49,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
         </div>
         <div className="mt-8">
           <h4 className="text-lg font-bold">About</h4>
-          <p className="text-gray-500">{info?.about || ''}</p>
+          <p className="text-gray-500 whitespace-pre-line">{info?.about || ''}</p>
         </div>
         <div className="mt-8">
           <h4 className="text-lg font-bold">Linked Accounts</h4>
@@ -73,7 +73,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
         </div>
       </div>
       {modalOpen && user && <EditProfileModal user={user} setOpen={setModalOpen} />}
-    </>
+    </ >
   )
 }
 

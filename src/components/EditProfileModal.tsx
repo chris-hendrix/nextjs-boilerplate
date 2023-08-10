@@ -43,7 +43,7 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
         <TextInput name="name" form={form} disabled={isLoading} />
         <TextInput name="username" form={form} disabled={isLoading} />
         <TextInput name="email" form={form} disabled={isLoading} />
-        <TextInput name="about" form={form} disabled={isLoading} />
+        <TextInput name="about" form={form} disabled={isLoading} multiline />
         <div className="flex justify-end mt-4">
           <div className="space-x-2">
             <button

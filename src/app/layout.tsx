@@ -12,9 +12,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
         <Navbar />
         <div className="flex h-screen">
           <div className="flex-grow">
-            <div className="flex min-h-screen flex-col items-center justify-between p-24">
+            <main className="flex w-full flex-col items-center p-24 max-w-screen-lg mx-auto">
               {children}
-            </div>
+            </main>
           </div>
         </div>
       </Providers>

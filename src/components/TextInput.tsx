@@ -5,10 +5,11 @@ import isStrongPassword from 'validator/lib/isStrongPassword'
 type Props = {
   name: string,
   form: UseFormReturn,
-  disabled?: boolean
+  disabled?: boolean,
+  multiline?: boolean
 }
 
-const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
+const TextInput: React.FC<Props> = ({ name, form, disabled = false, multiline = false }) => {
   const { register, getValues, formState: { errors } } = form
 
   let inputProps = {
@@ -63,12 +64,21 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
     }
   }
 
+  const InputElement = multiline ? 'textarea' : 'input'
+
   return <div className="mb-4">
     <label htmlFor="email" className="block mb-2 font-bold">
       {inputProps.label}
     </label>
-    <input
-      className={`input input-bordered mb-1 w-full ${errors?.[name] ? 'input-error' : ''}`}
+    <InputElement
+      className={[
+        'input',
+        'input-bordered',
+        'mb-1',
+        'w-full',
+        errors?.[name] ? 'input-error' : '',
+        multiline ? 'min-h-[144px] h-[auto] p-4' : '',
+      ].join(' ')}
       {...inputProps}
     />
     <span className="block h-1 text-sm text-red-500">{errors?.[name]?.message as string || ''}</span>

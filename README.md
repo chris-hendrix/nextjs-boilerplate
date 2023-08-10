@@ -1,9 +1,9 @@
-# Boilerplate Next.js
+# Next.js Boilerplate
 
 ### Description
-A Typescript boilerplate web project using [Next.js](https://nextjs.org/) (App Router) and [Tailwind](https://tailwindcss.com/). User authentication (username/password) has been set up using [NextAuth.js](https://next-auth.js.org/). 
+A Typescript boilerplate web project using [Next.js](https://nextjs.org/) (App Router) and [Tailwind](https://tailwindcss.com/), and [Postgres](https://www.postgresql.org/). User authentication (username/password) has been set up using [NextAuth.js](https://next-auth.js.org/). 
 
-Things that have been setup for you:
+This boilerplate contains:
 - 🔑 User auth and session management using [NextAuth.js](https://next-auth.js.org/)
 - 👪 ORM using [Prisma](https://www.prisma.io/)
 - 📄 A user signup page, sign in page, and user list page using [React](https://reactjs.org/), [Tailwind](https://tailwindcss.com/), and [Daisy UI](https://daisyui.com/) 
@@ -13,11 +13,6 @@ Things that have been setup for you:
 - 🤡 Unit testing using [Jest](https://jestjs.io/)
 
 Note that [SSR](https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic-rendering) is not included in this boilerplate as it is not really applicable user authentication (which uses redux to update state). Feel free to add SSR to your own pages though!
-
-### Services
-The services used in this project are:
-- database: Postgres
-- client & server: Next.js with React
 
 ### Installation
 1. Install [Node LTS](https://nodejs.org/en/)
