@@ -3,10 +3,6 @@ import { useSignInMutation, useSignOutMutation } from '@/store/session'
 import { SignInOptions, SignInAuthorizationParams, getCsrfToken } from 'next-auth/react'
 import { BuiltInProviderType } from 'next-auth/providers'
 
-/**
- * Custom hook for handling user sign-in functionality via redux. The signIn function mimics:
- * https://github.com/nextauthjs/next-auth/blob/main/packages/next-auth/src/react/index.tsx
- */
 export const useSignIn = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -41,7 +37,13 @@ export const useSignIn = () => {
     setIsLoading(false)
   }
 
-  return { signIn, isLoading, isSuccess, error }
+  const reset = () => {
+    setIsLoading(false)
+    setIsSuccess(false)
+    setError(null)
+  }
+
+  return { signIn, isLoading, isSuccess, error, reset }
 }
 
 /**

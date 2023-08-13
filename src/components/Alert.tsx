@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { getErrorMessage } from '@/lib/error'
 
 type Props = {
   message?: string | null,
   error?: any,
   type?: 'normal' | 'info' | 'success' | 'warning' | 'error',
-  time?: number
+  time?: number | null
 }
 
 const ICONS = {
@@ -15,10 +16,21 @@ const ICONS = {
   error: <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
 }
 
+/**
+ * Alert Component
+ *
+ * Displays an alert message with an optional icon and a specified duration.
+ * If the 'time' prop is set to null, the alert remains visible indefinitely.
+ *
+ * @param {string|null} message - The alert message to display.
+ * @param {any} error - An error object to extract the error message from.
+ * @param {'normal' | 'info' | 'success' | 'warning' | 'error'} type - The type of alert.
+ * @param {number|null} time - Duration in ms for display. If null, alert is shown indefinitely.
+ */
 const Alert: React.FC<Props> = ({ message = null, error = null, type = 'normal', time = 3000 }) => {
   const [showAlert, setShowAlert] = useState(false)
   const alertType = error ? 'error' : type
-  const alertMessage = error?.data?.message || message
+  const alertMessage = getErrorMessage(error) || message
 
   useEffect(() => {
     if (!time) {

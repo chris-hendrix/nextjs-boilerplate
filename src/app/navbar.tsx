@@ -56,8 +56,8 @@ const Dropdown: React.FC = () => {
           </li>
       </ul>
       </div>
-      {signupOpen && <CredentialsModal setOpen={setSignupOpen} />}
-      {loginOpen && <CredentialsModal setOpen={setLoginOpen} login />}
+      {signupOpen && <CredentialsModal setOpen={setSignupOpen} signUp />}
+      {loginOpen && <CredentialsModal setOpen={setLoginOpen} />}
     </div>
   )
 }

@@ -41,6 +41,7 @@ const logError = (error: any) => {
 
 const getErrorMessage = (message: string) => {
   if (message.includes('Unique constraint failed on the fields: (`username`)')) return 'Username exists'
+  if (message.includes('Unique constraint failed on the fields: (`email`)')) return 'Email exists'
   return message
 }
 
@@ -52,8 +53,10 @@ export const routeWrapper = (
     req.jsonBody = req.body && await req.json()
     logRequest(req)
     const result = await routeHandler(req, context)
+    console.log({ result })
     return result
   } catch (error: any) {
+    console.log({ error })
     const response = {
       ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
       message: getErrorMessage(error.message),

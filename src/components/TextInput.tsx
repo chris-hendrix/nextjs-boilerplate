@@ -18,6 +18,7 @@ const TextInput: React.FC<Props> = ({
   let inputProps = {
     label: name.charAt(0).toUpperCase() + name.slice(1),
     type: 'text',
+    autoComplete: 'off',
     disabled,
     ...!register ? {} : register(name)
   }
@@ -26,6 +27,7 @@ const TextInput: React.FC<Props> = ({
     inputProps = {
       ...inputProps,
       label: 'Username*',
+      autoComplete: 'username',
       ...!register ? {} : register(name, {
         required: 'Username is required',
         validate: (value: string) => noValidation || value.length > 2 || 'Too short'
@@ -37,6 +39,8 @@ const TextInput: React.FC<Props> = ({
     inputProps = {
       ...inputProps,
       label: 'Email*',
+      type: 'email',
+      autoComplete: 'email',
       ...!register ? {} : register(name, {
         required: 'Email is required',
         validate: (value: string) => noValidation || isEmail(value) || 'Invalid email'
@@ -49,6 +53,7 @@ const TextInput: React.FC<Props> = ({
       ...inputProps,
       label: 'Password*',
       type: 'password',
+      autoComplete: 'current-password',
       ...!register ? {} : register(name, {
         required: 'Password is required',
         validate: (value: string) => noValidation || isStrongPassword(value) || 'Weak password'
@@ -61,6 +66,7 @@ const TextInput: React.FC<Props> = ({
       ...inputProps,
       label: 'Password confirmation*',
       type: 'password',
+      autoComplete: 'current-password',
       ...!register || !getValues ? {} : register(name, {
         validate: (value: string) => noValidation || getValues()?.password === value || 'Password does not match'
       })
