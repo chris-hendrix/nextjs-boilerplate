@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
-import { userApi, useGetUserQuery, useGetUsersQuery, useAddUserMutation, useUpdateUserMutation } from './user'
-import { sessionApi, useGetSessionQuery } from './session'
+import { userApi } from './user'
+import { sessionApi } from './session'
 
 export const makeStore = () => configureStore({
   reducer: {
@@ -19,7 +19,5 @@ export const store = makeStore()
 
 setupListeners(store.dispatch)
 
-export {
-  useGetUserQuery, useGetUsersQuery, useAddUserMutation, useUpdateUserMutation,
-  useGetSessionQuery,
-}
+export { useGetUserQuery, useGetUsersQuery, useAddUserMutation, useUpdateUserMutation } from './user'
+export { useGetSessionQuery, useSignInMutation, useSignOutMutation } from './session'

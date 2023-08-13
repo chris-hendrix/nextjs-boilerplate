@@ -6,10 +6,13 @@ type Props = {
   name: string,
   form: UseFormReturn,
   disabled?: boolean,
-  multiline?: boolean
+  multiline?: boolean,
+  noValidation?: boolean,
 }
 
-const TextInput: React.FC<Props> = ({ name, form, disabled = false, multiline = false }) => {
+const TextInput: React.FC<Props> = ({
+  name, form, disabled = false, multiline = false, noValidation = false
+}) => {
   const { register, getValues, formState: { errors } } = form
 
   let inputProps = {
@@ -25,7 +28,7 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false, multiline = 
       label: 'Username*',
       ...!register ? {} : register(name, {
         required: 'Username is required',
-        validate: (value: string) => value.length > 2 || 'Too short'
+        validate: (value: string) => noValidation || value.length > 2 || 'Too short'
       })
     }
   }
@@ -36,7 +39,7 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false, multiline = 
       label: 'Email*',
       ...!register ? {} : register(name, {
         required: 'Email is required',
-        validate: (value: string) => isEmail(value) || 'Invalid email'
+        validate: (value: string) => noValidation || isEmail(value) || 'Invalid email'
       })
     }
   }
@@ -48,7 +51,7 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false, multiline = 
       type: 'password',
       ...!register ? {} : register(name, {
         required: 'Password is required',
-        validate: (value: string) => isStrongPassword(value) || 'Weak password'
+        validate: (value: string) => noValidation || isStrongPassword(value) || 'Weak password'
       })
     }
   }
@@ -59,7 +62,7 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false, multiline = 
       label: 'Password confirmation*',
       type: 'password',
       ...!register || !getValues ? {} : register(name, {
-        validate: (value: string) => getValues()?.password === value || 'Password does not match'
+        validate: (value: string) => noValidation || getValues()?.password === value || 'Password does not match'
       })
     }
   }

@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import useSessionUser from '@/hooks/user'
-import { signOut } from 'next-auth/react'
 import Avatar from '@/components/Avatar'
 import CredentialsModal from '@/components/CredentialsModal'
+import { useSignOut } from '@/hooks/session'
 
 import Home from '@/icons/Home'
 import UserGroup from '@/icons/UserGroup'
@@ -14,6 +14,7 @@ import Menu from '@/icons/Menu'
 
 const Dropdown: React.FC = () => {
   const { user, isLoading } = useSessionUser()
+  const { signOut } = useSignOut()
   const [signupOpen, setSignupOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
 
