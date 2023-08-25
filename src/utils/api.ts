@@ -53,10 +53,8 @@ export const routeWrapper = (
     req.jsonBody = req.body && await req.json()
     logRequest(req)
     const result = await routeHandler(req, context)
-    console.log({ result })
     return result
   } catch (error: any) {
-    console.log({ error })
     const response = {
       ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
       message: getErrorMessage(error.message),

@@ -41,7 +41,7 @@ export const GET = routeWrapper(
 )
 
 export const POST = routeWrapper(async (req: NextRequest) => {
-  checkUserBody(req.jsonBody)
+  await checkUserBody(req.jsonBody)
 
   const { username, email, password } = req.jsonBody
   const hash = await generateHash(password)
