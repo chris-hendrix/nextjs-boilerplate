@@ -12,17 +12,19 @@ export const sanitizeUserSelect = () => {
 export const checkUserBody = async (body: any, id: string | null = null) => {
   const usernameExists = async (username: string) => {
     const user = await prisma.user.findUnique({ where: { username } })
-    return user && user.id !== id
+    if (!id) return Boolean(user)
+    return Boolean(user && user.id !== id)
   }
   const emailExists = async (email: string) => {
     const user = await prisma.user.findUnique({ where: { email } })
-    return user && user.id !== id
+    if (!id) return Boolean(user)
+    return Boolean(user && user.id !== id)
   }
 
   if (!body) throw new ApiError('Request must have body', 400)
   const { username, email } = body
-  if (email && await emailExists(email)) throw new ApiError('Email exists', 400)
   if (username && await usernameExists(username)) throw new ApiError('Username exists', 400)
+  if (email && await emailExists(email)) throw new ApiError('Email exists', 400)
 }
 
 export const GET = routeWrapper(
@@ -39,7 +41,7 @@ export const GET = routeWrapper(
 )
 
 export const POST = routeWrapper(async (req: NextRequest) => {
-  checkUserBody(req.jsonBody)
+  await checkUserBody(req.jsonBody)
 
   const { username, email, password } = req.jsonBody
   const hash = await generateHash(password)

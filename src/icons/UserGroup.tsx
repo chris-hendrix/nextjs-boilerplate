@@ -3,6 +3,7 @@ import { SVGProps } from 'react'
 
 // https://heroicons.com/
 // https://react-svgr.com/playground/?typescript=true
+
 const UserGroup = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

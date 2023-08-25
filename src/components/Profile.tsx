@@ -1,9 +1,9 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
 import { User } from '@prisma/client'
 import { formatDate } from '@/lib/date'
+import Avatar from '@/components/Avatar'
 import EditProfileModal from '@/components/EditProfileModal'
 
 interface Props {
@@ -13,13 +13,21 @@ interface Props {
 
 const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
   const [modalOpen, setModalOpen] = useState(false)
+  const avatar = <Avatar user={user} size={60} />
+  const info = user.info as any
 
   return (
     <>
       <div className="flex items-center justify-between bg-base-200 rounded-box p-4">
         <div className="flex items-center">
-          <div className="relative w-12 h-12 rounded-full mr-4 overflow-hidden">
-            <Image src="/avatar.svg" alt="User Avatar" fill />
+          <div className="mr-4">
+            {!canEdit
+              ? avatar
+              : <label style={{ cursor: 'pointer' }}>
+                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={() => console.log('TODO')} />
+                {avatar}
+              </label>
+            }
           </div>
           {user && (
             <div>
@@ -41,10 +49,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
         </div>
         <div className="mt-8">
           <h4 className="text-lg font-bold">About</h4>
-          <p className="text-gray-500">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Sed auctor nisi eu quam tincidunt tempus.
-          </p>
+          <p className="text-gray-500 whitespace-pre-line">{info?.about || ''}</p>
         </div>
         <div className="mt-8">
           <h4 className="text-lg font-bold">Linked Accounts</h4>
@@ -68,7 +73,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
         </div>
       </div>
       {modalOpen && user && <EditProfileModal user={user} setOpen={setModalOpen} />}
-    </>
+    </ >
   )
 }
 

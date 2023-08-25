@@ -3,27 +3,23 @@
 describe('User tests', () => {
   after(() => { cy.task('deleteTestUsers') })
 
-  it('User can sign up, sign in, and logout', () => {
-    // signup
+  it('New user can sign up and logout', () => {
     cy.visit('/')
     cy.signUpUser()
-    cy.url().should('eq', `${Cypress.config().baseUrl}/api/auth/signin`)
-
-    // login
-    cy.visit('/')
-    cy.loginUser()
-    cy.url().should('not.contain', '/api')
-
-    // logout
+    cy.openMenuAndClick('Profile')
     cy.logoutUser()
-    cy.get('[class~="btn-circle"').click()
-    cy.wait(500)
-    cy.contains('a', 'Log in')
   })
 
-  it('User cannot sign up twice', () => {
+  it('Existing user can sign in and logout', () => {
+    cy.visit('/')
+    cy.loginUser()
+    cy.openMenuAndClick('Profile')
+    cy.logoutUser()
+  })
+
+  it('Existing user cannot sign up twice', () => {
     cy.visit('/')
     cy.signUpUser() // same user as previous test
-    cy.url().should('eq', `${Cypress.config().baseUrl}/signup`)
+    cy.contains('button', 'Sign up')
   })
 })

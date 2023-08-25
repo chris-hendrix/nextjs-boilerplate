@@ -51,6 +51,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  info          Json?
 }
 
 model VerificationToken {

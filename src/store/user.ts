@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { User } from '@prisma/client'
-import { API_URL } from '@/config'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   tagTypes: ['User'],
   endpoints: (build) => ({
     getUser: build.query<User, string>({

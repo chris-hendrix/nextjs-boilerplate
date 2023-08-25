@@ -5,15 +5,20 @@ import isStrongPassword from 'validator/lib/isStrongPassword'
 type Props = {
   name: string,
   form: UseFormReturn,
-  disabled?: boolean
+  disabled?: boolean,
+  multiline?: boolean,
+  noValidation?: boolean,
 }
 
-const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
+const TextInput: React.FC<Props> = ({
+  name, form, disabled = false, multiline = false, noValidation = false
+}) => {
   const { register, getValues, formState: { errors } } = form
 
   let inputProps = {
     label: name.charAt(0).toUpperCase() + name.slice(1),
     type: 'text',
+    autoComplete: 'off',
     disabled,
     ...!register ? {} : register(name)
   }
@@ -22,9 +27,10 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
     inputProps = {
       ...inputProps,
       label: 'Username*',
+      autoComplete: 'username',
       ...!register ? {} : register(name, {
         required: 'Username is required',
-        validate: (value: string) => value.length > 2 || 'Too short'
+        validate: (value: string) => noValidation || value.length > 2 || 'Too short'
       })
     }
   }
@@ -33,9 +39,11 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
     inputProps = {
       ...inputProps,
       label: 'Email*',
+      type: 'email',
+      autoComplete: 'email',
       ...!register ? {} : register(name, {
         required: 'Email is required',
-        validate: (value: string) => isEmail(value) || 'Invalid email'
+        validate: (value: string) => noValidation || isEmail(value) || 'Invalid email'
       })
     }
   }
@@ -45,9 +53,10 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
       ...inputProps,
       label: 'Password*',
       type: 'password',
+      autoComplete: 'current-password',
       ...!register ? {} : register(name, {
         required: 'Password is required',
-        validate: (value: string) => isStrongPassword(value) || 'Weak password'
+        validate: (value: string) => noValidation || isStrongPassword(value) || 'Weak password'
       })
     }
   }
@@ -57,18 +66,28 @@ const TextInput: React.FC<Props> = ({ name, form, disabled = false }) => {
       ...inputProps,
       label: 'Password confirmation*',
       type: 'password',
+      autoComplete: 'current-password',
       ...!register || !getValues ? {} : register(name, {
-        validate: (value: string) => getValues()?.password === value || 'Password does not match'
+        validate: (value: string) => noValidation || getValues()?.password === value || 'Password does not match'
       })
     }
   }
+
+  const InputElement = multiline ? 'textarea' : 'input'
 
   return <div className="mb-4">
     <label htmlFor="email" className="block mb-2 font-bold">
       {inputProps.label}
     </label>
-    <input
-      className={`input input-bordered mb-1 w-full ${errors?.[name] ? 'input-error' : ''}`}
+    <InputElement
+      className={[
+        'input',
+        'input-bordered',
+        'mb-1',
+        'w-full',
+        errors?.[name] ? 'input-error' : '',
+        multiline ? 'min-h-[144px] h-[auto] p-4' : '',
+      ].join(' ')}
       {...inputProps}
     />
     <span className="block h-1 text-sm text-red-500">{errors?.[name]?.message as string || ''}</span>
