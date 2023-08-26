@@ -65,7 +65,7 @@ const Dropdown: React.FC = () => {
 const Navbar: React.FC = () => (
   <div className="navbar bg-primary text-primary-content">
     <div className="navbar-start" />
-    <div className="navbar-center text-xl">
+    <div className="navbar-center text-xl font-bold">
       <Link href="/">Next.js Boilerplate</Link>
     </div>
     <div className="navbar-end">

@@ -51,26 +51,6 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
           <h4 className="text-lg font-bold">About</h4>
           <p className="text-gray-500 whitespace-pre-line">{info?.about || ''}</p>
         </div>
-        <div className="mt-8">
-          <h4 className="text-lg font-bold">Linked Accounts</h4>
-          <ul className="mt-2 space-x-2">
-            <li className="inline-block">
-              <a href="#" className="text-blue-600 hover:underline">
-                Twitter
-              </a>
-            </li>
-            <li className="inline-block">
-              <a href="#" className="text-blue-600 hover:underline">
-                LinkedIn
-              </a>
-            </li>
-            <li className="inline-block">
-              <a href="#" className="text-blue-600 hover:underline">
-                GitHub
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
       {modalOpen && user && <EditProfileModal user={user} setOpen={setModalOpen} />}
     </ >

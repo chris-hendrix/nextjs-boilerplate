@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress'
 import { deleteTestUsers } from '../utils'
-import { APP_URL, TEST_SECRET } from '../../src/config'
+import { APP_URL, TEST_PREFIX } from '../../src/config'
 
 const cypressConfig = defineConfig({
   e2e: {
@@ -15,7 +15,7 @@ const cypressConfig = defineConfig({
         deleteTestUsers: async () => deleteTestUsers(),
       })
     },
-    env: { TEST_SECRET },
+    env: { TEST_PREFIX },
   },
 })
 
