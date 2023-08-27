@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { TEST_SECRET } from '../../src/config'
+import { TEST_PREFIX } from '../../src/config'
 
 type User = { username: string, email: string, password: string }
 declare global {
@@ -14,8 +14,8 @@ declare global {
 }
 
 export const createNewUser = () => ({
-  username: `${TEST_SECRET}-patch-adams-${new Date().getTime()}`,
-  email: `${TEST_SECRET}-patch-adams-${new Date().getTime()}@email.com`,
+  username: `${TEST_PREFIX}-patch-adams-${new Date().getTime()}`,
+  email: `${TEST_PREFIX}-patch-adams-${new Date().getTime()}@email.com`,
   password: 'Abcd1234!'
 })
 

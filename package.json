@@ -13,7 +13,9 @@
     "devtest": "NODE_ENV=test && next dev",
     "jest": "NODE_ENV=test jest --config=test/jest/jest.config.ts --runInBand --forceExit --verbose",
     "cypress:open": "cypress open --config-file test/cypress/cypress.config.ts",
-    "cypress": "cypress run --config-file test/cypress/cypress.config.ts"
+    "cypress": "cypress run --config-file test/cypress/cypress.config.ts",
+    "seed": "ts-node ./prisma/seed.ts",
+    "unseed": "ts-node ./prisma/unseed.ts"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
@@ -46,9 +48,11 @@
     "react-hook-form": "^7.45.4",
     "react-redux": "^8.1.2",
     "tailwindcss": "^3.3.3",
+    "@tailwindcss/typography": "^0.5.9",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
+    "unique-names-generator": "^4.7.1",
     "validator": "^13.11.0"
   }
 }

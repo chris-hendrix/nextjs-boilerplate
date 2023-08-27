@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Expand env variables
         run: |
-          echo "DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOSTNAME:$POSTGRES_PORT/$POSTGRES_DB?schema=public" >> $GITHUB_ENV
+          echo "DATABASE_URI=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOSTNAME:$POSTGRES_PORT/$POSTGRES_DB?schema=public" >> $GITHUB_ENV
           echo "NEXTAUTH_URL=$PROTOCOL://$HOSTNAME:$PORT" >> $GITHUB_ENV
           echo "CYPRESS_BASE_URL=$PROTOCOL://$HOSTNAME:$PORT" >> $GITHUB_ENV
 
