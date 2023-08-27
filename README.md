@@ -32,7 +32,7 @@ POSTGRES_PORT=5432
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
-DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOSTNAME}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public
+DATABASE_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOSTNAME}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public
 ```
 5. Run the following in the root directory
 ```
@@ -53,5 +53,5 @@ npm run dev
    - The install command should be overridden to be `npm install && npm run migrate`
 2. Import your Git Repository
 3. [Setup your Vercel Postgres database](https://vercel.com/guides/nextjs-prisma-postgres#step-2:-set-up-your-vercel-postgres-database)
-4. Set a `DATABASE_URL` Environment Variable to be the connection string under the Storage Tab > <your_database> > Quickstart Section > psql (just the portion in the quotes)
+4. Set a `DATABASE_URI` Environment Variable to be the connection string under the Storage Tab > <your_database> > Quickstart Section > psql (just the portion in the quotes)
 5. Redeploy
