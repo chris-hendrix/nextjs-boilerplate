@@ -15,7 +15,7 @@ const UsersProfilePage: React.FC<Props> = ({ params }) => {
   if (!user) return <></>
 
   return (
-    <main className="px-6 py-4">
+    <main className="w-full px-6 py-4 max-w-screen-sm">
       <Profile user={user} />
     </main>
   )
