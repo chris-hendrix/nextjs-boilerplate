@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { useUpdateUserMutation } from '@/store'
 import Alert from '@/components/Alert'
+import Avatar from '@/components/Avatar'
 import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
+import FileUploadButton from './FileUploadButton'
 
 interface Props {
   user: Partial<User>;
@@ -12,8 +14,12 @@ interface Props {
 }
 
 const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
-  const [updateUser, { isLoading, isSuccess, error }] = useUpdateUserMutation()
+  const [updateUser, { isLoading, isSuccess, error: updateUserError }] = useUpdateUserMutation()
   const form = useForm({ mode: 'onChange' })
+  const [imageUrl, setImageUrl] = useState('')
+  const [imageUploadError, setImageUploadError] = useState<any | null>(null)
+
+  const error = updateUserError || imageUploadError
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
     const { name, username, email, about } = data
@@ -36,9 +42,17 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
     })
   }, [])
 
+  useEffect(() => { imageUrl && updateUser({ id: user.id, bucketImage: imageUrl }) }, [imageUrl])
+
   if (!user) return <></>
   return (
     <Modal title="Edit profile" setOpen={setOpen}>
+      <FileUploadButton
+        buttonComponent={<Avatar size={60} />} // TODO make clickable
+        bucketDirectory={`image/${user.id}`}
+        onFileUpload={setImageUrl}
+        onError={setImageUploadError}
+      />
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="name" form={form} disabled={isLoading} />
         <TextInput name="username" form={form} disabled={isLoading} />

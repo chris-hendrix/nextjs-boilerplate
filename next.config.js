@@ -13,6 +13,25 @@ const nextConfig = {
         ]
       }
     ]
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+        pathname: '/storage/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.googleusercontent.com',
+        pathname: '/**',
+      },
+    ],
+  },
+  supabase: {
+    client: {
+      auth: { persistSession: false }
+    }
   }
 }
 
