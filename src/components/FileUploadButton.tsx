@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useUploadFileMutation } from '@/store'
 
 interface ImageUploaderProps {
   buttonComponent?: React.ReactNode,
@@ -13,22 +14,19 @@ const FileUploadButton: React.FC<ImageUploaderProps> = ({
   onFileUpload,
   onError,
 }) => {
+  const [uploadFile, { error }] = useUploadFileMutation()
+
+  useEffect(() => { onError && onError(error) }, [error])
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0]
     if (!file) return
-
-    try {
-      const data = new FormData()
-      data.append('directory', bucketDirectory)
-      data.append('file', file)
-      const res = await fetch('/api/storage', {
-        method: 'POST',
-        body: data
-      })
-      onFileUpload && onFileUpload(await res.json())
-    } catch (error: any) {
-      onError && onError(error)
-    }
+    const data = new FormData()
+    data.append('directory', bucketDirectory)
+    data.append('file', file)
+    const res = await uploadFile(data)
+    const url = 'data' in res && res.data.publicUrl
+    url && onFileUpload && onFileUpload(url)
   }
 
   return (

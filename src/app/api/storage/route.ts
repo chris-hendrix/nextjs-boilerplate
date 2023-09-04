@@ -32,5 +32,5 @@ export const POST = routeWrapper(async (req: NextRequest) => {
   // get public url
   const { data: { publicUrl } } = await storageApi.getPublicUrl(path)
 
-  return NextResponse.json(publicUrl)
+  return NextResponse.json({ publicUrl })
 })

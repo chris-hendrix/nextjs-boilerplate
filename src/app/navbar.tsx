@@ -22,7 +22,7 @@ const Dropdown: React.FC = () => {
     if (isLoading) return null
     if (user) {
       return <>
-        <li><Link href="/profile"><Avatar />Profile</Link></li>
+        <li><Link href="/profile"><Avatar user={user} />Profile</Link></li>
         <li><a onClick={() => signOut()}><Logout />Log out</a></li>
       </>
     }
