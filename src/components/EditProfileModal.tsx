@@ -48,12 +48,17 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   return (
     <Modal title="Edit profile" setOpen={setOpen}>
       <FileUploadButton
-        buttonComponent={<Avatar size={60} />} // TODO make clickable
+        buttonComponent={
+          <div className="avatar indicator" style={{ cursor: 'pointer' }}>
+            <span className="indicator-item badge badge-secondary">+</span>
+            <Avatar user={user} size={60} />
+          </div>
+        }
         bucketDirectory={`image/${user.id}`}
         onFileUpload={setImageUrl}
         onError={setImageUploadError}
       />
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="name" form={form} disabled={isLoading} />
         <TextInput name="username" form={form} disabled={isLoading} />
         <TextInput name="email" form={form} disabled={isLoading} />

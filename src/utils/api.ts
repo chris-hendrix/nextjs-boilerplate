@@ -45,24 +45,18 @@ const getErrorMessage = (message: string) => {
   return message
 }
 
-const setConsumedBody = async (req: NextRequest) => {
-  const contentType = req.headers.get('content-type')?.toLowerCase()
-  console.log({ contentType })
-  if (contentType === 'application/json') req.consumedBody = await req.json()
-  if (contentType === 'multipart/form-data') {
-    console.log('BEFORE')
-    req.consumedBody = await req.formData()
-    console.log('AFTER')
-  }
-  console.log(req.consumedBody)
-}
-
 export const routeWrapper = (
   routeHandler: (
     req: NextRequest, context?: any) => Promise<NextResponse>
 ) => async (req: NextRequest, context?: any) => {
+  const setConsumedBody = async () => {
+    const contentType = req.headers.get('content-type')?.toLowerCase()
+    console.log({ contentType })
+    if (contentType === 'application/json') req.consumedBody = await req.json()
+    if (contentType === 'multipart/form-data') req.consumedBody = await req.formData()
+  }
   try {
-    await setConsumedBody(req)
+    await setConsumedBody()
     logRequest(req)
     const result = await routeHandler(req, context)
     return result

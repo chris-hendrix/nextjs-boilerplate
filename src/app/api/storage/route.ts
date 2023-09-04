@@ -2,9 +2,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import supabase from '@/lib/supabase'
 import { SUPABASE_BUCKET } from '@/config'
-import { ApiError, withSessionUser } from '@/utils/api'
+import { ApiError, routeWrapper, withSessionUser } from '@/utils/api'
 
-export const POST = async (req: NextRequest) => {
+export const POST = routeWrapper(async (req: NextRequest) => {
   if (!supabase) throw new ApiError('Supabase storage not setup')
   await withSessionUser() // user must be logged in
 
@@ -33,4 +33,4 @@ export const POST = async (req: NextRequest) => {
   const { data: { publicUrl } } = await storageApi.getPublicUrl(path)
 
   return NextResponse.json(publicUrl)
-}
+})
