@@ -20,8 +20,10 @@ export const POST = routeWrapper(async (req: NextRequest) => {
   // clear existing files
   const { data: list, error: listError } = await storageApi.list(`${directory}/`)
   if (listError) throw new ApiError(listError.message)
-  const { error: removeError } = await storageApi.remove(list?.map((f) => `${directory}/${f.name}`) || [])
-  if (removeError) throw new ApiError(removeError.message)
+  if (list?.length) {
+    const { error: removeError } = await storageApi.remove(list?.map((f) => `${directory}/${f.name}`) || [])
+    if (removeError) throw new ApiError(removeError.message)
+  }
 
   // upload new file
   const { error: uploadError } = await storageApi.upload(path, buffer, {
