@@ -50,8 +50,7 @@ export const routeWrapper = (
     req: NextRequest, context?: any) => Promise<NextResponse>
 ) => async (req: NextRequest, context?: any) => {
   const setConsumedBody = async () => {
-    if (req.consumedBody) return
-    const contentType = 'content-type' in req.headers && req.headers.get('content-type')?.toLowerCase()
+    const contentType = (typeof req.headers?.get === 'function') && req.headers.get('content-type')?.toLowerCase()
     if (contentType === 'application/json') req.consumedBody = await req?.json()
     if (contentType === 'multipart/form-data') req.consumedBody = await req?.formData()
   }

@@ -18,6 +18,7 @@ export const createNextRequest = (options: CreateNextRequest = defaultOptions) =
   const { method, body, searchParams } = options
   const req = createRequest({ method })
   req.consumedBody = { ...body }
+  req.headers = { 'content-type': '', ...req.headers }
   req.nextUrl = {
     searchParams: new URLSearchParams(
       Object.entries(searchParams || {}).map(([key, value]) => [key, value.toString()])
