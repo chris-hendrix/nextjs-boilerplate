@@ -2,23 +2,27 @@ import React, { useEffect } from 'react'
 import { useUploadFileMutation } from '@/store'
 
 interface ImageUploaderProps {
-  buttonComponent?: React.ReactNode,
-  bucketDirectory?: string,
-  onFileUpload?: (fileUrl: string) => void,
-  onError?: (error: any) => void
+  children: React.ReactNode;
+  bucketDirectory?: string;
+  onFileUpload?: (fileUrl: string) => void;
+  onError?: (error: any) => void;
 }
 
-const FileUploadButton: React.FC<ImageUploaderProps> = ({
-  buttonComponent,
+const FileUploaWrapper: React.FC<ImageUploaderProps> = ({
+  children,
   bucketDirectory = '',
   onFileUpload,
   onError,
 }) => {
   const [uploadFile, { error }] = useUploadFileMutation()
 
-  useEffect(() => { onError && onError(error) }, [error])
+  useEffect(() => {
+    onError && onError(error)
+  }, [error])
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target?.files?.[0]
     if (!file) return
     const data = new FormData()
@@ -37,11 +41,9 @@ const FileUploadButton: React.FC<ImageUploaderProps> = ({
         id="fileInput"
         onChange={handleFileChange}
       />
-      <label htmlFor="fileInput" >
-        {buttonComponent || <button>Upload</button>}
-      </label>
+      <label htmlFor="fileInput">{children}</label>
     </>
   )
 }
 
-export default FileUploadButton
+export default FileUploaWrapper

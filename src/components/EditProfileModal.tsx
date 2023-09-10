@@ -6,7 +6,7 @@ import Alert from '@/components/Alert'
 import Avatar from '@/components/Avatar'
 import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
-import FileUploadButton from './FileUploadButton'
+import FileUploadWrapper from './FileUploadWrapper'
 
 interface Props {
   user: Partial<User>;
@@ -47,17 +47,16 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   if (!user) return <></>
   return (
     <Modal title="Edit profile" setOpen={setOpen}>
-      <FileUploadButton
-        buttonComponent={
-          <div className="avatar indicator" style={{ cursor: 'pointer' }}>
-            <span className="indicator-item badge badge-secondary">+</span>
-            <Avatar user={user} size={60} />
-          </div>
-        }
+      <FileUploadWrapper
         bucketDirectory={`image/${user.id}`}
         onFileUpload={setImageUrl}
         onError={setImageUploadError}
-      />
+      >
+        <div className="avatar indicator" style={{ cursor: 'pointer' }}>
+          <span className="indicator-item badge badge-secondary">+</span>
+          <Avatar user={user} size={60} />
+        </div>
+      </FileUploadWrapper>
       <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="name" form={form} disabled={isLoading} />
         <TextInput name="username" form={form} disabled={isLoading} />
@@ -68,7 +67,7 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
             <button
               type="submit"
               className="btn btn-primary w-24"
-              disabled={!form.formState.isValid || isLoading}
+              disabled={!form.formState.isValid || isLoading || !form.formState.isDirty}
             >
               Save
             </button>
