@@ -22,8 +22,8 @@ export const createNewUser = () => ({
 export const defaultUser = createNewUser()
 
 Cypress.Commands.add('openMenuAndClick', (linkText) => {
-  cy.get('[id="menu-button"').click()
-  cy.get('[class~="dropdown-content"').contains(linkText).click()
+  cy.get('[id="dropdown"]').click()
+  cy.get('li').contains(linkText).click()
 })
 
 Cypress.Commands.add('signUpUser', (user = defaultUser) => {

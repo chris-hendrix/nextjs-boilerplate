@@ -36,6 +36,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off', // allows functions calls before definition
     'jsx-quotes': ['error', 'prefer-double'], // force double quotes for jsx props
     'object-curly-newline': 'off', // allows objects on one line
+    'operator-linebreak': 'off', // allows "&&" to be at the end of a line (for jsx specifically)
     'react/prop-types': 'off', // no need for propTypes in typescript
     'react/react-in-jsx-scope': 'off', // no need to import React in jsx files
     'react-hooks/exhaustive-deps': 'off' // no need for all dependencies for useEffect

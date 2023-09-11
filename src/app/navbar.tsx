@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import useSessionUser from '@/hooks/user'
 import Avatar from '@/components/Avatar'
@@ -17,6 +17,19 @@ const Dropdown: React.FC = () => {
   const { signOut } = useSignOut()
   const [signupOpen, setSignupOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  const ref = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const closeDropdownOnOutsideClick = (e: MouseEvent) => {
+      ref.current && !ref.current.contains(e.target as Node) && setDropdownOpen(false)
+    }
+    document.addEventListener('mousedown', closeDropdownOnOutsideClick)
+    return () => {
+      document.removeEventListener('mousedown', closeDropdownOnOutsideClick)
+    }
+  }, [])
 
   const renderUserLinks = () => {
     if (isLoading) return null
@@ -33,32 +46,41 @@ const Dropdown: React.FC = () => {
   }
 
   return (
-    <div className="flex-none">
-      <div className="dropdown dropdown-end">
-        <label tabIndex={0} className="btn btn-ghost avatar" id="menu-button">
+    <>
+      <div id="dropdown" className="relative group inline-block" ref={ref}>
+        <button
+          id="menu-button"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          className="btn btn-ghost avatar"
+        >
           <Menu />
           <Avatar user={user} />
-      </label>
-      <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-200 rounded-box w-52 text-primary">
-        {renderUserLinks()}
-          <div className="divider" />
-          <li>
-            <Link href="/">
-              <Home height={24} width={24} />
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link href="/users">
-              <UserGroup height={24} width={24} />
-              Users
-            </Link>
-          </li>
-      </ul>
+        </button>
+        {dropdownOpen && (
+          <div className="absolute right-0 mt-3 p-2 shadow menu menu-compact bg-base-200 rounded-box w-52 text-primary">
+            <ul className="" onClick={() => setDropdownOpen(false)}>
+              {renderUserLinks()}
+              <div className="divider" />
+              <li>
+                <Link href="/">
+                  <Home height={24} width={24} />
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/users">
+                  <UserGroup height={24} width={24} />
+                  Users
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
       {signupOpen && <CredentialsModal setOpen={setSignupOpen} signUp />}
       {loginOpen && <CredentialsModal setOpen={setLoginOpen} />}
-    </div>
+    </>
+
   )
 }
 
