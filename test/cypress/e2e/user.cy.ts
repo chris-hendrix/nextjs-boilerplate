@@ -10,16 +10,16 @@ describe('User tests', () => {
     cy.logoutUser()
   })
 
-  // it('Existing user can sign in and logout', () => {
-  //   cy.visit('/')
-  //   cy.loginUser()
-  //   cy.openMenuAndClick('Profile')
-  //   cy.logoutUser()
-  // })
+  it('Existing user can sign in and logout', () => {
+    cy.visit('')
+    cy.loginUser()
+    cy.openMenuAndClick('Profile')
+    cy.logoutUser()
+  })
 
-  // it('Existing user cannot sign up twice', () => {
-  //   cy.visit('/')
-  //   cy.signUpUser() // same user as previous test
-  //   cy.contains('button', 'Sign up')
-  // })
+  it('Existing user cannot sign up twice', () => {
+    cy.visit('/')
+    cy.signUpUser() // same user as previous test
+    cy.contains('button', 'Sign up')
+  })
 })
