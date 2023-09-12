@@ -31,7 +31,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
           )}
         </div>
         {canEdit && <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
-          Edit Profile
+          Edit profile
         </button>}
       </div>
       <div className="p-4">
