@@ -27,11 +27,6 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  supabase: {
-    client: {
-      auth: { persistSession: false }
-    }
   }
 }
 
