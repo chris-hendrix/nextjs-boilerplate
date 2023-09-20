@@ -48,10 +48,8 @@ npm run up
 npm run dev
 ```
 
-### Deploying to Vercel
-1. Create a new project in [Vercel](vercel.com)
-   - The install command should be overridden to be `npm install && npm run migrate`
-2. Import your Git Repository
-3. [Setup your Vercel Postgres database](https://vercel.com/guides/nextjs-prisma-postgres#step-2:-set-up-your-vercel-postgres-database)
-4. Set a `DATABASE_URI` Environment Variable to be the connection string under the Storage Tab > <your_database> > Quickstart Section > psql (just the portion in the quotes)
-5. Redeploy
+### Setup user profile image upload Supabase (optional)
+1. Sign up and create a project on [supabase](https://supabase.com/dashboard).
+2. Create a **public** storage bucket and add `SUPABASE_BUCKET` to the `.env` above
+3. Add a policy to your bucket that allows `SELECT`, `INSERT`, `UPDATE`, and `DELETE`.
+4. From Settings > API, add your URL and anon/public API keys to the `.env` as `SUPABASE_URL` and `SUPABASE_ANON_KEY`.

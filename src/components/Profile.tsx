@@ -13,7 +13,6 @@ interface Props {
 
 const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
   const [modalOpen, setModalOpen] = useState(false)
-  const avatar = <Avatar user={user} size={60} />
   const info = user.info as any
 
   return (
@@ -21,13 +20,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
       <div className="flex items-center justify-between bg-base-200 rounded-box p-4">
         <div className="flex items-center">
           <div className="mr-4">
-            {!canEdit
-              ? avatar
-              : <label style={{ cursor: 'pointer' }}>
-                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={() => console.log('TODO')} />
-                {avatar}
-              </label>
-            }
+            <Avatar user={user} size={60} />
           </div>
           {user && (
             <div>
@@ -38,7 +31,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
           )}
         </div>
         {canEdit && <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
-          Edit Profile
+          Edit profile
         </button>}
       </div>
       <div className="p-4">
@@ -47,10 +40,13 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
           <p className="text-gray-500">{user?.name}</p>
           <p className="text-gray-500">{user?.email}</p>
         </div>
-        <div className="mt-8">
-          <h4 className="text-lg font-bold">About</h4>
-          <p className="text-gray-500 whitespace-pre-line">{info?.about || ''}</p>
-        </div>
+        {info?.about
+          && <div className="mt-8">
+            <h4 className="text-lg font-bold">About</h4>
+            <p className="text-gray-500 whitespace-pre-line">{info?.about || ''}</p>
+          </div>
+        }
+
       </div>
       {modalOpen && user && <EditProfileModal user={user} setOpen={setModalOpen} />}
     </ >

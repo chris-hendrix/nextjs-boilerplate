@@ -41,9 +41,9 @@ export const GET = routeWrapper(
 )
 
 export const POST = routeWrapper(async (req: NextRequest) => {
-  await checkUserBody(req.jsonBody)
+  await checkUserBody(req.consumedBody)
 
-  const { username, email, password } = req.jsonBody
+  const { username, email, password } = req.consumedBody
   const hash = await generateHash(password)
   const user = await prisma.user.create({
     data: { username, email, password: hash },
