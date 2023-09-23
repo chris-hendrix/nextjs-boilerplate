@@ -9,7 +9,7 @@ import { useSignOut } from '@/hooks/session'
 
 import Home from '@/icons/Home'
 import UserGroup from '@/icons/UserGroup'
-import Logout from '@/icons/Logout'
+import ArrowLeftOnRectangle from '@/icons/ArrowLeftOnRectangle'
 import Menu from '@/icons/Menu'
 
 const Dropdown: React.FC = () => {
@@ -36,7 +36,7 @@ const Dropdown: React.FC = () => {
     if (user) {
       return <>
         <li><Link href="/profile"><Avatar user={user} />Profile</Link></li>
-        <li><a onClick={() => signOut()}><Logout />Log out</a></li>
+        <li><a onClick={() => signOut()}><ArrowLeftOnRectangle />Log out</a></li>
       </>
     }
     return <>

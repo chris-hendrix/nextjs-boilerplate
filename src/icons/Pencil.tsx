@@ -1,7 +1,6 @@
 import SvgWrapper from '@/components/SvgWrapper'
 
 // https://heroicons.com/
-// https://react-svgr.com/playground/?typescript=true
 
 const Pencil = ({ ...props }) => (
   <SvgWrapper {...props}>
