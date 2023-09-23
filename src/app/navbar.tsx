@@ -57,7 +57,7 @@ const Dropdown: React.FC = () => {
           <Avatar user={user} />
         </button>
         {dropdownOpen && (
-          <div className="absolute right-0 mt-3 p-2 shadow menu menu-compact bg-base-200 rounded-box w-52 text-primary">
+          <div className="absolute right-0 mt-3 p-2 shadow menu menu-compact bg-base-200 rounded-box w-52 text-primary z-50">
             <ul className="" onClick={() => setDropdownOpen(false)}>
               {renderUserLinks()}
               <div className="divider" />

@@ -52,7 +52,11 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
         onFileUpload={setImageUrl}
         onError={setImageUploadError}
       >
-        <div className="avatar indicator" style={{ cursor: 'pointer' }}>
+        <div
+          className="avatar indicator tooltip tooltip-right"
+          data-tip="Upload new"
+          style={{ cursor: 'pointer' }}
+        >
           <span className="indicator-item badge badge-secondary">+</span>
           <Avatar user={user} size={60} />
         </div>
