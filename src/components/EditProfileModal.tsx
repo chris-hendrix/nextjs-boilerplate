@@ -35,10 +35,10 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   useEffect(() => {
     // initial form data
     form.reset({
-      name: user.name,
-      username: user.username,
-      email: user.email,
-      about: (user.info as any)?.about,
+      name: user.name || '',
+      username: user.username || '',
+      email: user.email || '',
+      about: (user.info as any)?.about || '',
     })
   }, [])
 
