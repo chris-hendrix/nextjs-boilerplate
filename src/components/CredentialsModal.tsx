@@ -30,16 +30,15 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
   useEffect(() => { signInSuccess && setOpen(false) }, [signInSuccess])
 
   const onSubmit = async (data: { [x: string]: string }) => {
-    const { username, email, password } = data
-    const signUpError = signUp && 'error' in await addUser({ username, email, password })
-    if (!signUp || !signUpError) await signIn('credentials', { username, password })
+    const { email, password } = data
+    const signUpError = signUp && 'error' in await addUser({ email, password })
+    if (!signUp || !signUpError) await signIn('credentials', { email, password })
   }
 
   return (
     <Modal title={signUp ? 'Sign up' : 'Log in'} setOpen={setOpen}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <TextInput name="username" form={form} disabled={isLoading} noValidation={!signUp} />
-        {signUp && <TextInput name="email" form={form} disabled={isLoading} />}
+        <TextInput name="email" form={form} disabled={isLoading} />
         <TextInput name="password" form={form} disabled={isLoading} noValidation={!signUp} />
         {signUp && <TextInput name="cpassword" form={form} disabled={isLoading} />}
         <button type="submit" className="btn btn-primary w-full">

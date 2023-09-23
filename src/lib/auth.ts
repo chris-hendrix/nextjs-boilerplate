@@ -10,13 +10,13 @@ const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'username' },
+        email: { label: 'email', type: 'email' },
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
         if (!credentials) throw new Error('Invalid credentials')
 
-        const user = await prisma.user.findUnique({ where: { username: credentials.username } })
+        const user = await prisma.user.findUnique({ where: { email: credentials.email } })
         if (!user) throw new Error('Invalid credentials')
 
         const valid = await validatePassword(credentials.password, user?.password as string)

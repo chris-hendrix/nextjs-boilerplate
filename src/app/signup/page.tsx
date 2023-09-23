@@ -12,8 +12,8 @@ const Signup: React.FC = () => {
   const [addUser, { isLoading, isSuccess, error }] = useAddUserMutation()
 
   const onSubmit = async (data: { [x: string]: string }) => {
-    const { username, email, password } = data
-    await addUser({ username, email, password })
+    const { email, password } = data
+    await addUser({ email, password })
   }
 
   if (isSuccess) router.push('/api/auth/signin')

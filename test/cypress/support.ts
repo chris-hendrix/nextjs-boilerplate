@@ -28,7 +28,6 @@ Cypress.Commands.add('openMenuAndClick', (linkText) => {
 
 Cypress.Commands.add('signUpUser', (user = defaultUser) => {
   cy.openMenuAndClick('Sign up')
-  cy.get('input[name="username"]').type(user.username)
   cy.get('input[name="email"]').type(user.email)
   cy.get('input[name="password"]').type(user.password)
   cy.get('input[name="cpassword"]').type(user.password)
@@ -37,7 +36,7 @@ Cypress.Commands.add('signUpUser', (user = defaultUser) => {
 
 Cypress.Commands.add('loginUser', (user = defaultUser) => {
   cy.openMenuAndClick('Log in')
-  cy.get('input[name="username"]').type(user.username)
+  cy.get('input[name="email"]').type(user.email)
   cy.get('input[name="password"]').type(user.password)
   cy.contains('button', 'Log in').click()
 })
