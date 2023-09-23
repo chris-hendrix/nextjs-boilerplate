@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { User } from '@prisma/client'
 import { useGetUsersQuery } from '@/store'
 import { formatDate } from '@/lib/date'
@@ -18,8 +19,8 @@ const UserCard: React.FC<{ user: Partial<User> }> = ({ user }) => (
         <p className="text-gray-500">{`Joined on ${formatDate(String(user.createdAt))}`}</p>
       </div>
     </div>
-    <a href={`/users/${user.id}`} className="btn btn-sm btn-secondary">
-      View Profile
+    <a className="btn btn-sm btn-secondary">
+      <Link href={`/users/${user.id}`}>View profile</Link>
     </a>
   </div>
 )
