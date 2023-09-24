@@ -7,7 +7,7 @@ type Props = {
   form: UseFormReturn,
   disabled?: boolean,
   multiline?: boolean,
-  validate?: (value: string) => any | null,
+  validate?: ((value: string) => any) | null,
 }
 
 const TextInput: React.FC<Props> = ({

@@ -39,7 +39,7 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
     <Modal title={signUp ? 'Sign up' : 'Log in'} setOpen={setOpen}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="email" form={form} disabled={isLoading} />
-        <TextInput name="password" form={form} disabled={isLoading} noValidation={!signUp} />
+        <TextInput name="password" form={form} disabled={isLoading} validate={!signUp ? () => true : null} />
         {signUp && <TextInput name="cpassword" form={form} disabled={isLoading} />}
         <button type="submit" className="btn btn-primary w-full">
           {signUp ? 'Sign up' : 'Log in'}
