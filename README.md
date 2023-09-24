@@ -20,9 +20,6 @@ Note that [SSR](https://nextjs.org/docs/app/building-your-application/rendering/
 3. Clone this repo
 4. Create the following `.env` file
 ```
-# testing
-TEST_PREFIX=<anything>
-
 # next-auth
 SECRET=<anything>
 

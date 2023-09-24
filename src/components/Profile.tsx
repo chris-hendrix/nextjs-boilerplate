@@ -25,8 +25,7 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
           </div>
           {user && (
             <div>
-              <h3 className="text-2xl font-medium">{user?.name}</h3>
-              <p className="text-gray-500">{user?.username}</p>
+              <h3 className="text-2xl font-medium">{user?.name || user?.email}</h3>
               <p className="text-gray-500">{`Joined on ${formatDate(String(user.createdAt))}`}</p>
             </div>
           )}

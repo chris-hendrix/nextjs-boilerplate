@@ -1,6 +1,7 @@
 import { createRequest, RequestMethod } from 'node-mocks-http'
-import { TEST_PREFIX } from '../src/config'
 import prisma from '../src/lib/prisma'
+
+export const TEST_EMAIL_DOMAIN = 'test.com'
 
 type CreateNextRequest = {
   method?: RequestMethod | undefined
@@ -31,12 +32,12 @@ export const generateUserBody = () => {
   const datetime = new Date().getTime()
   return {
     name: `Patch Adams ${datetime}`,
-    username: `${TEST_PREFIX}-patch-adams-${datetime}`,
-    email: `${TEST_PREFIX}-patch-adams-${datetime}@email.com`,
+    username: `patch-adams-${datetime}`,
+    email: `patch-adams-${datetime}@${TEST_EMAIL_DOMAIN}`,
     password: 'Abcd1234!'
   }
 }
 
 export const deleteTestUsers = async () => prisma.user.deleteMany({
-  where: { username: { contains: TEST_PREFIX } }
+  where: { username: { endsWith: `@${TEST_EMAIL_DOMAIN}` } }
 })

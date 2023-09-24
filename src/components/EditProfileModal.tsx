@@ -22,11 +22,10 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   const error = updateUserError || imageUploadError
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
-    const { name, username, email, about } = data
+    const { name, email, about } = data
     await updateUser({
       id: user.id,
       name,
-      username,
       email,
       info: { about }
     })
@@ -35,10 +34,9 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   useEffect(() => {
     // initial form data
     form.reset({
-      name: user.name || '',
-      username: user.username || '',
-      email: user.email || '',
-      about: (user.info as any)?.about || '',
+      name: user.name,
+      email: user.email,
+      about: (user.info as any)?.about,
     })
   }, [])
 
@@ -63,7 +61,6 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
       </FileUploadWrapper>
       <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="name" form={form} disabled={isLoading} />
-        <TextInput name="username" form={form} disabled={isLoading} />
         <TextInput name="email" form={form} disabled={isLoading} />
         <TextInput name="about" form={form} disabled={isLoading} multiline />
         <div className="flex justify-end mt-4">

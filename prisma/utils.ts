@@ -1,7 +1,8 @@
 import { uniqueNamesGenerator, Config, names } from 'unique-names-generator'
 import { PrismaClient } from '@prisma/client'
-import { SEED_PREFIX } from '../src/config'
 import { generateHash } from '../src/utils/hash'
+
+const SEED_EMAIL_DOMAIN = 'seed.com'
 
 export const prisma = new PrismaClient()
 
@@ -15,7 +16,7 @@ const generateUser = async () => {
     data: {
       name: `${firstName} ${lastName}`,
       username,
-      email: `${username}@seed.com`,
+      email: `${username}@${SEED_EMAIL_DOMAIN}`,
       password: await generateHash('Abc1234!')
     }
   })
@@ -28,5 +29,5 @@ export const generateSeedData = async (userCount = 20) => {
 }
 
 export const deleteSeedData = async () => prisma.user.deleteMany({
-  where: { username: { contains: SEED_PREFIX } }
+  where: { email: { endsWith: `@${SEED_EMAIL_DOMAIN}` } }
 })

@@ -1,4 +1,4 @@
-import { UseFormReturn } from 'react-hook-form'
+import { UseFormReturn, RegisterOptions } from 'react-hook-form'
 import isEmail from 'validator/lib/isEmail'
 import isStrongPassword from 'validator/lib/isStrongPassword'
 
@@ -7,20 +7,28 @@ type Props = {
   form: UseFormReturn,
   disabled?: boolean,
   multiline?: boolean,
-  noValidation?: boolean,
+  validate?: (value: string) => any | null,
 }
 
 const TextInput: React.FC<Props> = ({
-  name, form, disabled = false, multiline = false, noValidation = false
+  name, form, disabled = false, multiline = false, validate = null
 }) => {
   const { register, getValues, formState: { errors } } = form
+
+  const registerHelper = (options?: RegisterOptions) => {
+    if (!register) return {}
+    return register(name, {
+      required: options?.required,
+      validate: validate || options?.validate
+    })
+  }
 
   let inputProps = {
     label: name.charAt(0).toUpperCase() + name.slice(1),
     type: 'text',
     autoComplete: 'off',
     disabled,
-    ...!register ? {} : register(name)
+    ...registerHelper()
   }
 
   if (name === 'username') {
@@ -28,9 +36,9 @@ const TextInput: React.FC<Props> = ({
       ...inputProps,
       label: 'Username*',
       autoComplete: 'username',
-      ...!register ? {} : register(name, {
+      ...registerHelper({
         required: 'Username is required',
-        validate: (value: string) => noValidation || value.length > 2 || 'Too short'
+        validate: (value: string) => value.length > 2 || 'Too short'
       })
     }
   }
@@ -41,9 +49,9 @@ const TextInput: React.FC<Props> = ({
       label: 'Email*',
       type: 'email',
       autoComplete: 'email',
-      ...!register ? {} : register(name, {
+      ...registerHelper({
         required: 'Email is required',
-        validate: (value: string) => noValidation || isEmail(value) || 'Invalid email'
+        validate: (value: string) => isEmail(value) || 'Invalid email'
       })
     }
   }
@@ -54,9 +62,9 @@ const TextInput: React.FC<Props> = ({
       label: 'Password*',
       type: 'password',
       autoComplete: 'current-password',
-      ...!register ? {} : register(name, {
+      ...registerHelper({
         required: 'Password is required',
-        validate: (value: string) => noValidation || isStrongPassword(value) || 'Weak password'
+        validate: (value: string) => isStrongPassword(value) || 'Weak password'
       })
     }
   }
@@ -67,8 +75,9 @@ const TextInput: React.FC<Props> = ({
       label: 'Password confirmation*',
       type: 'password',
       autoComplete: 'current-password',
-      ...!register || !getValues ? {} : register(name, {
-        validate: (value: string) => noValidation || getValues()?.password === value || 'Password does not match'
+      ...registerHelper({
+        required: false,
+        validate: (value: string) => getValues()?.password === value || 'Password does not match'
       })
     }
   }

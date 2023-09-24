@@ -31,7 +31,7 @@ describe('User tests', () => {
     cy.openMenuAndClick('Profile')
     cy.get('#edit-profile').click()
 
-    cy.get('input[name="name"]').clear().type(text)
+    cy.get('input[name="name"]').type(text)
     cy.get('button[type="submit"]').click()
     cy.contains('button', 'Close').click()
     cy.contains(text).should('exist')
