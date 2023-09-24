@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { TEST_PREFIX } from '../../src/config'
+import { TEST_EMAIL_DOMAIN } from '../utils'
 
 type User = { username: string, email: string, password: string }
 declare global {
@@ -14,8 +14,8 @@ declare global {
 }
 
 export const createNewUser = () => ({
-  username: `${TEST_PREFIX}-patch-adams-${new Date().getTime()}`,
-  email: `${TEST_PREFIX}-patch-adams-${new Date().getTime()}@email.com`,
+  username: `patch-adams-${new Date().getTime()}`,
+  email: `patch-adams-${new Date().getTime()}@${TEST_EMAIL_DOMAIN}.com`,
   password: 'Abcd1234!'
 })
 
@@ -28,7 +28,6 @@ Cypress.Commands.add('openMenuAndClick', (linkText) => {
 
 Cypress.Commands.add('signUpUser', (user = defaultUser) => {
   cy.openMenuAndClick('Sign up')
-  cy.get('input[name="username"]').type(user.username)
   cy.get('input[name="email"]').type(user.email)
   cy.get('input[name="password"]').type(user.password)
   cy.get('input[name="cpassword"]').type(user.password)
@@ -37,7 +36,7 @@ Cypress.Commands.add('signUpUser', (user = defaultUser) => {
 
 Cypress.Commands.add('loginUser', (user = defaultUser) => {
   cy.openMenuAndClick('Log in')
-  cy.get('input[name="username"]').type(user.username)
+  cy.get('input[name="email"]').type(user.email)
   cy.get('input[name="password"]').type(user.password)
   cy.contains('button', 'Log in').click()
 })

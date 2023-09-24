@@ -32,7 +32,7 @@ CREATE TABLE "Session" (
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT,
-    "username" TEXT NOT NULL,
+    "username" TEXT,
     "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
     "password" TEXT,
@@ -41,6 +41,7 @@ CREATE TABLE "User" (
     "admin" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "info" JSONB,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

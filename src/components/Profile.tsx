@@ -5,6 +5,7 @@ import { User } from '@prisma/client'
 import { formatDate } from '@/lib/date'
 import Avatar from '@/components/Avatar'
 import EditProfileModal from '@/components/EditProfileModal'
+import Pencil from '@/icons/Pencil'
 
 interface Props {
   user: Partial<User>
@@ -24,15 +25,18 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
           </div>
           {user && (
             <div>
-              <h3 className="text-2xl font-medium">{user?.name}</h3>
-              <p className="text-gray-500">{user?.username}</p>
+              <h3 className="text-2xl font-medium">{user?.name || user?.email}</h3>
               <p className="text-gray-500">{`Joined on ${formatDate(String(user.createdAt))}`}</p>
             </div>
           )}
         </div>
-        {canEdit && <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
-          Edit profile
-        </button>}
+        {canEdit &&
+          <div className="tooltip" data-tip="Edit profile">
+            <button id="edit-profile" className="btn btn-square p-2" onClick={() => setModalOpen(true)}>
+              <Pencil className="text-primary" />
+            </button>
+          </div>
+        }
       </div>
       <div className="p-4">
         <div className="mt-8">

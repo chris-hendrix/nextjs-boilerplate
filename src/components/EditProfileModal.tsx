@@ -22,11 +22,10 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   const error = updateUserError || imageUploadError
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
-    const { name, username, email, about } = data
+    const { name, email, about } = data
     await updateUser({
       id: user.id,
       name,
-      username,
       email,
       info: { about }
     })
@@ -36,7 +35,6 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
     // initial form data
     form.reset({
       name: user.name,
-      username: user.username,
       email: user.email,
       about: (user.info as any)?.about,
     })
@@ -52,14 +50,17 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
         onFileUpload={setImageUrl}
         onError={setImageUploadError}
       >
-        <div className="avatar indicator" style={{ cursor: 'pointer' }}>
+        <div
+          className="avatar indicator tooltip tooltip-right"
+          data-tip="Upload new"
+          style={{ cursor: 'pointer' }}
+        >
           <span className="indicator-item badge badge-secondary">+</span>
           <Avatar user={user} size={60} />
         </div>
       </FileUploadWrapper>
       <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="name" form={form} disabled={isLoading} />
-        <TextInput name="username" form={form} disabled={isLoading} />
         <TextInput name="email" form={form} disabled={isLoading} />
         <TextInput name="about" form={form} disabled={isLoading} multiline />
         <div className="flex justify-end mt-4">

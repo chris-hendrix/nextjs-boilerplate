@@ -17,7 +17,7 @@ describe('/api/users', () => {
     expect(res.status).toBe(200)
   })
 
-  test('user can signup with username and password', async () => {
+  test('user can signup with email and password', async () => {
     const body = generateUserBody()
     const req = createNextRequest({ method: 'POST', body })
     const res = await postUser(req)
@@ -25,7 +25,7 @@ describe('/api/users', () => {
 
     const data = await res.json()
     expect(data).toEqual(
-      expect.objectContaining({ username: body.username }),
+      expect.objectContaining({ email: body.email }),
     )
   })
 
