@@ -13,14 +13,14 @@ describe('/api/users', () => {
 
   test('users can be retrieved', async () => {
     const req = createNextRequest()
-    const res = await getUsers(req)
+    const res: any = await getUsers(req)
     expect(res.status).toBe(200)
   })
 
   test('user can signup with email and password', async () => {
     const body = generateUserBody()
     const req = createNextRequest({ method: 'POST', body })
-    const res = await postUser(req)
+    const res: any = await postUser(req)
     expect(res.status).toBe(200)
 
     const data = await res.json()
@@ -33,7 +33,7 @@ describe('/api/users', () => {
     const user = await createGetServerSessionMock()
     const body = { username: generateUserBody().username }
     const req = createNextRequest({ method: 'PUT', body })
-    const res = await putUser(req, { params: { id: user.id } })
+    const res: any = await putUser(req, { params: { id: user.id } })
     expect(res.status).toBe(200)
 
     const data = await res.json()
@@ -49,7 +49,7 @@ describe('/api/users', () => {
       data: generateUserBody()
     })
     const req = createNextRequest({ method: 'PUT', body })
-    const res = await putUser(req, { params: { id: otherUser.id } })
+    const res: any = await putUser(req, { params: { id: otherUser.id } })
     expect(res.status).toBe(401)
   })
 })
