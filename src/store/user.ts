@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { User } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -10,7 +10,7 @@ export const userApi = createApi({
       query: (id) => `users/${id}`,
       providesTags: (_result, _err, id) => [{ type: 'User', id }],
     }),
-    getUsers: build.query<User[], { skip: number, take: number } | undefined>({
+    getUsers: build.query<User[], Prisma.UserFindManyArgs | undefined>({
       query: (params) => ({
         url: 'users',
         params
