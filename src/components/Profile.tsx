@@ -20,11 +20,14 @@ const Profile: React.FC<Props> = ({ user, canEdit = false }) => {
     <>
       <div className="flex items-center justify-between bg-base-200 rounded-box p-4">
         <div className="flex items-center">
-          <div className="mr-4">
+          <div className="mr-4 hidden md:block">
             <Avatar user={user} size={60} />
           </div>
           {user && (
             <div>
+              <div className="flex mb-4 md:hidden">
+                <Avatar user={user} size={64} />
+              </div>
               <h3 className="text-2xl font-medium">{user?.name || user?.email}</h3>
               <p className="text-gray-500">{`Joined on ${formatDate(String(user.createdAt))}`}</p>
             </div>
