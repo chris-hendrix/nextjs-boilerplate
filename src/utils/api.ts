@@ -57,17 +57,6 @@ const logError = (error: any) => {
 }
 
 /**
- * Extracts a human-readable error message from the given error string.
- * @param message - The error message string.
- * @returns Human-readable error message.
- */
-const getErrorMessage = (message: string) => {
-  if (message.includes('Unique constraint failed on the fields: (`username`)')) return 'Username exists'
-  if (message.includes('Unique constraint failed on the fields: (`email`)')) return 'Email exists'
-  return 'Server failure'
-}
-
-/**
  * Wraps a route handler function with error handling and request logging.
  * @param routeHandler - The route handler function to be wrapped.
  * @returns Wrapped route handler function.
@@ -89,7 +78,7 @@ export const routeWrapper = (
   } catch (error: any) {
     const response = {
       ...(process.env.NODE_ENV !== 'production' && { stack: error.stack }),
-      message: getErrorMessage(error.message),
+      message: error?.message || 'Server failure',
       statusCode: error.statusCode,
     }
     logError(response)

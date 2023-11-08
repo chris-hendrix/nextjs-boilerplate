@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSignInMutation, useSignOutMutation } from '@/store/session'
 import { SignInOptions, SignInAuthorizationParams, getCsrfToken } from 'next-auth/react'
 import { BuiltInProviderType } from 'next-auth/providers'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
 export const useSignIn = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -25,15 +26,19 @@ export const useSignIn = () => {
       },
       authParams
     })
-    const url = 'data' in res && res.data?.url
-    const authError = url && new URL(url).searchParams.get('error')
+
     let httpsError: string | null = null
     if ('error' in res) {
-      if ('status' in res.error) httpsError = String('error' in res.error ? res.error.error : res.error.data)
-      else httpsError = String(res.error.message)
+      const fetchError = res.error as FetchBaseQueryError
+      if ('error' in fetchError && typeof fetchError.error === 'string') httpsError = fetchError.error
+      if ('data' in fetchError && typeof fetchError.data === 'string') httpsError = fetchError.data
+      if ('data' in fetchError && typeof fetchError.data === 'object') {
+        const url = (fetchError?.data && 'url' in fetchError.data && fetchError.data.url as string) || null
+        httpsError = url && new URL(url).searchParams.get('error')
+      }
     }
-    setIsSuccess(!httpsError && !authError)
-    setError(httpsError || authError || null)
+    setIsSuccess(!httpsError)
+    setError(httpsError || null)
     setIsLoading(false)
   }
 
