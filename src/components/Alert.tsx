@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { AlertType } from '@/store/app'
 import { getErrorMessage } from '@/lib/error'
 
 type Props = {
-  message?: string | null,
+  message?: string,
   error?: any,
-  type?: 'normal' | 'info' | 'success' | 'warning' | 'error',
-  time?: number | null
+  type?: AlertType
+  duration?: number
 }
 
 const ICONS = {
@@ -27,18 +28,18 @@ const ICONS = {
  * @param {'normal' | 'info' | 'success' | 'warning' | 'error'} type - The type of alert.
  * @param {number|null} time - Duration in ms for display. If null, alert is shown indefinitely.
  */
-const Alert: React.FC<Props> = ({ message = null, error = null, type = 'normal', time = 3000 }) => {
+const Alert: React.FC<Props> = ({ message = null, error = null, type = 'normal', duration = 3000 }) => {
   const [showAlert, setShowAlert] = useState(false)
   const alertType = error ? 'error' : type
   const alertMessage = getErrorMessage(error) || message
 
   useEffect(() => {
-    if (!time) {
+    if (!duration) {
       setShowAlert(true)
       return () => null
     }
     setShowAlert(true)
-    const timeout = setTimeout(() => setShowAlert(false), time)
+    const timeout = setTimeout(() => setShowAlert(false), duration)
     return () => clearTimeout(timeout)
   }, [])
 

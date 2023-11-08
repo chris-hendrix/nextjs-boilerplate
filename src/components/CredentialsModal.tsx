@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAddUserMutation } from '@/store'
 import { useSignIn } from '@/hooks/session'
-import Alert from '@/components/Alert'
+import { useAlert } from '@/hooks/app'
 import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
+import { getErrorMessage } from '@/lib/error'
 
 interface Props {
   setOpen: (open: boolean) => void;
@@ -23,11 +24,15 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
     isSuccess: signInSuccess,
     error: signInError
   } = useSignIn()
+  const { showAlert } = useAlert()
 
   const isLoading = isAddUserLoading || isSignInLoading
-  const error = addUserError || signInError
+  const errorMessage = getErrorMessage(addUserError || signInError)
 
-  useEffect(() => { signInSuccess && setOpen(false) }, [signInSuccess])
+  useEffect(() => {
+    signInSuccess && setOpen(false)
+    showAlert('Success', { type: 'success' })
+  }, [signInSuccess])
 
   const onSubmit = async (data: { [x: string]: string }) => {
     const { email, password } = data
@@ -45,7 +50,7 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
           {signUp ? 'Sign up' : 'Log in'}
         </button>
       </form>
-      {error && <div className="mt-2"><Alert error={error} time={null} /></div>}
+      {errorMessage && <div className="mt-2 h-1 text-sm text-red-500">{errorMessage}</div>}
     </Modal>
 
   )
