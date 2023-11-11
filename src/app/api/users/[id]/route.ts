@@ -24,12 +24,14 @@ export const PUT = routeWrapper(
     if (req.consumedBody?.currentPassword) {
       const user = await prisma.user.findUnique({ where: { id } })
       const { currentPassword, password, confirmPassword } = req.consumedBody
-      if (password === currentPassword) throw new ApiError('New password is the same as existing', 409)
       const valid = (
         password === confirmPassword &&
         await validatePassword(currentPassword, String(user?.password))
       )
+
       if (!valid) throw new ApiError('Invalid credentials', 401)
+      if (password === currentPassword) throw new ApiError('New password is the same as existing', 409)
+
       const hash = await generateHash(password)
       const updatedUser = await prisma.user.update({
         where: { id },

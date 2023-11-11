@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, createContext, useContext, ReactNode } from 'react'
 import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { useUpdateUserMutation } from '@/store'
@@ -8,6 +8,36 @@ import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
 import FileUploadWrapper from './FileUploadWrapper'
 
+type UserContextType = {
+  updateUser: any
+  showAlert: (options: { successMessage?: string; error?: any }) => void;
+  isLoading: boolean
+}
+
+const UserContext = createContext<UserContextType | undefined>(undefined)
+
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [updateUser, { isSuccess, error, isLoading }] = useUpdateUserMutation()
+  const { showAlert } = useAlert()
+
+  useEffect(() => { isSuccess && showAlert({ successMessage: 'Changes saved' }) }, [isSuccess])
+  useEffect(() => { error && showAlert({ error }) }, [error])
+
+  return (
+    <UserContext.Provider value={{ updateUser, showAlert, isLoading }}>
+      {children}
+    </UserContext.Provider>
+  )
+}
+
+export const useUser = () => {
+  const context = useContext(UserContext)
+  if (!context) {
+    throw new Error('useUser must be used within a UserProvider')
+  }
+  return context
+}
+
 type FormType = 'profile' | 'email' | 'password'
 interface FormProps {
   user: Partial<User>;
@@ -16,13 +46,10 @@ interface FormProps {
 }
 
 const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) => {
-  const [updateUser, { isLoading, isSuccess, error: updateUserError }] = useUpdateUserMutation()
+  const { updateUser, showAlert, isLoading } = useUser()
   const form = useForm({ mode: 'onChange' })
-  const { showAlert } = useAlert()
   const [imageUrl, setImageUrl] = useState('')
-  const [imageUploadError, setImageUploadError] = useState<any | null>(null)
-
-  const error = updateUserError || imageUploadError
+  const [error, setError] = useState<any | null>(null) // image upload error
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
     const { name, about } = data
@@ -42,8 +69,8 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
     })
   }, [])
 
+  // image upload
   useEffect(() => { imageUrl && updateUser({ id: user.id, bucketImage: imageUrl }) }, [imageUrl])
-  useEffect(() => { isSuccess && showAlert({ successMessage: 'Changes saved' }) }, [isSuccess])
   useEffect(() => { error && showAlert({ error }) }, [error])
 
   if (!user) return <></>
@@ -53,7 +80,7 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
         <FileUploadWrapper
           bucketDirectory={`image/${user.id}`}
           onFileUpload={setImageUrl}
-          onError={setImageUploadError}
+          onError={setError}
         >
           <div
             className="avatar indicator tooltip tooltip-right"
@@ -98,11 +125,8 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
 }
 
 const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
-  const [updateUser, { isLoading, isSuccess, error: updateUserError }] = useUpdateUserMutation()
+  const { updateUser, isLoading } = useUser()
   const form = useForm({ mode: 'onChange' })
-  const { showAlert } = useAlert()
-
-  const error = updateUserError
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
     const { currentPassword, password, confirmPassword } = data
@@ -115,9 +139,6 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
     if ('error' in res) return
     setActiveForm('profile')
   }
-
-  useEffect(() => { isSuccess && showAlert({ successMessage: 'Changes saved' }) }, [isSuccess])
-  useEffect(() => { error && showAlert({ error }) }, [error])
 
   if (!user) return <></>
   return (
@@ -167,7 +188,9 @@ const EditProfileModal: React.FC<ModalProps> = ({ user, setOpen }) => {
   if (!user) return <></>
   return (
     <Modal title="Edit profile" setOpen={setOpen}>
+      <UserProvider>
       {forms[activeForm]}
+      </UserProvider>
     </Modal>
   )
 }
