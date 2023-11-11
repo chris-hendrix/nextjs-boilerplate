@@ -105,22 +105,16 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
   const error = updateUserError
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
-    const { name, about } = data
-    await updateUser({
+    const { currentPassword, password, confirmPassword } = data
+    const res = await updateUser({
       id: user.id,
-      name,
-      info: { about }
+      currentPassword,
+      password,
+      confirmPassword
     })
+    if ('error' in res) return
+    setActiveForm('profile')
   }
-
-  useEffect(() => {
-    // initial form data
-    form.reset({
-      name: user.name,
-      email: user.email,
-      about: (user.info as any)?.about,
-    })
-  }, [])
 
   useEffect(() => { isSuccess && showAlert({ successMessage: 'Changes saved' }) }, [isSuccess])
   useEffect(() => { error && showAlert({ error }) }, [error])
@@ -129,7 +123,7 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
   return (
     <div>
       <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <TextInput name="currentPassword" form={form} disabled={isLoading} />
+        <TextInput name="currentPassword" form={form} disabled={isLoading} validate={() => true} />
         <TextInput name="password" labelOverride="New password*" form={form} disabled={isLoading} />
         <TextInput name="confirmPassword" labelOverride="New password confirmation*" form={form} disabled={isLoading} />
         <div className="flex justify-end mt-4">
@@ -137,7 +131,7 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
             <button
               type="submit"
               className="btn btn-primary w-24"
-              disabled={!form.formState.isValid || isLoading || !form.formState.isDirty}
+              disabled={!form.formState.isValid || isLoading}
             >
               Save
             </button>

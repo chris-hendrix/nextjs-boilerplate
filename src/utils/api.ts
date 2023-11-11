@@ -29,6 +29,7 @@ const sanitizeBody = (consumedBody: any) => {
   const sanitizedBody = { ...consumedBody }
   if ('password' in sanitizedBody) sanitizedBody.password = sanitizedText
   if ('confirmPassword' in sanitizedBody) sanitizedBody.confirmPassword = sanitizedText
+  if ('currentPassword' in sanitizedBody) sanitizedBody.currentPassword = sanitizedText
   return sanitizedBody
 }
 
