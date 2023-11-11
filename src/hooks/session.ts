@@ -45,6 +45,7 @@ export const useSignIn = () => {
  */
 export const useSignOut = () => {
   const [signOutUser] = useSignOutMutation()
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const signOut = async (options?: SignInOptions,) => {
     await signOutUser({
@@ -54,7 +55,8 @@ export const useSignOut = () => {
       },
     })
     window.location.reload() // TODO try to invalidate instead of reload
+    setIsSuccess(true)
   }
 
-  return { signOut }
+  return { signOut, isSuccess }
 }

@@ -6,9 +6,10 @@ import { useAlert } from '@/hooks/app'
 
 const AlertBox = () => {
   const { isVisible, message, type, duration } = useAlert()
+
   if (!isVisible || !message || !type || !duration) return null
   return (
-    <div>
+    <div style={{ zIndex: 9999 }} className={'fixed bottom-8 left-8 w-96 transition-opacity duration-300 ease-in-out'}>
       <Alert message={message} type={type} duration={duration} />
     </div>
   )

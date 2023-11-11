@@ -30,8 +30,9 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
   const errorMessage = getErrorMessage(addUserError || signInError)
 
   useEffect(() => {
-    signInSuccess && setOpen(false)
-    showAlert('Success', { type: 'success' })
+    if (!signInSuccess) return
+    setOpen(false)
+    showAlert({ successMessage: 'Successfully signed in' })
   }, [signInSuccess])
 
   const onSubmit = async (data: { [x: string]: string }) => {

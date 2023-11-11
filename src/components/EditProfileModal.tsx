@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { useUpdateUserMutation } from '@/store'
-import Alert from '@/components/Alert'
+import { useAlert } from '@/hooks/app'
 import Avatar from '@/components/Avatar'
 import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
@@ -16,6 +16,7 @@ interface Props {
 const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   const [updateUser, { isLoading, isSuccess, error: updateUserError }] = useUpdateUserMutation()
   const form = useForm({ mode: 'onChange' })
+  const { showAlert } = useAlert()
   const [imageUrl, setImageUrl] = useState('')
   const [imageUploadError, setImageUploadError] = useState<any | null>(null)
 
@@ -41,6 +42,8 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
   }, [])
 
   useEffect(() => { imageUrl && updateUser({ id: user.id, bucketImage: imageUrl }) }, [imageUrl])
+  useEffect(() => { isSuccess && showAlert({ successMessage: 'Changes saved' }) }, [isSuccess])
+  useEffect(() => { error && showAlert({ error }) }, [error])
 
   if (!user) return <></>
   return (
@@ -83,8 +86,6 @@ const EditProfileModal: React.FC<Props> = ({ user, setOpen }) => {
           </div>
         </div>
       </form>
-      {error && <div className="mt-2"><Alert error={error} /></div>}
-      {isSuccess && <div className="mt-2"><Alert message="Saved!" type="success" /></div>}
     </Modal>
 
   )

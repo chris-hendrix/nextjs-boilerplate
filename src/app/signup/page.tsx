@@ -1,20 +1,24 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useAddUserMutation } from '@/store'
+import { useAlert } from '@/hooks/app'
 import TextInput from '@/components/TextInput'
-import Alert from '@/components/Alert'
 
 const Signup: React.FC = () => {
   const form = useForm({ mode: 'onChange' })
   const router = useRouter()
+  const { showAlert } = useAlert()
   const [addUser, { isLoading, isSuccess, error }] = useAddUserMutation()
 
   const onSubmit = async (data: { [x: string]: string }) => {
     const { email, password } = data
     await addUser({ email, password })
   }
+
+  useEffect(() => { error && showAlert({ error }) }, [error])
 
   if (isSuccess) router.push('/api/auth/signin')
 
@@ -31,7 +35,6 @@ const Signup: React.FC = () => {
             Sign up
           </button>
         </form>
-        {error && <div className="mt-2"><Alert error={error} /></div>}
       </div>
     </div>
   )
