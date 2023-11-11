@@ -30,7 +30,7 @@ Cypress.Commands.add('signUpUser', (user = defaultUser) => {
   cy.openMenuAndClick('Sign up')
   cy.get('input[name="email"]').type(user.email)
   cy.get('input[name="password"]').type(user.password)
-  cy.get('input[name="cpassword"]').type(user.password)
+  cy.get('input[name="confirmPassword"]').type(user.password)
   cy.contains('button', 'Sign up').click()
 })
 

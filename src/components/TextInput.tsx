@@ -8,10 +8,11 @@ type Props = {
   disabled?: boolean,
   multiline?: boolean,
   validate?: ((value: string) => any) | null,
+  labelOverride?: string
 }
 
 const TextInput: React.FC<Props> = ({
-  name, form, disabled = false, multiline = false, validate = null
+  name, form, disabled = false, multiline = false, validate = null, labelOverride = null
 }) => {
   const { register, getValues, formState: { errors } } = form
 
@@ -69,7 +70,7 @@ const TextInput: React.FC<Props> = ({
     }
   }
 
-  if (name === 'cpassword') {
+  if (name === 'confirmPassword') {
     inputProps = {
       ...inputProps,
       label: 'Password confirmation*',
@@ -82,11 +83,24 @@ const TextInput: React.FC<Props> = ({
     }
   }
 
+  if (name === 'currentPassword') {
+    inputProps = {
+      ...inputProps,
+      label: 'Current password*',
+      type: 'password',
+      autoComplete: 'current-password',
+      ...registerHelper({
+        required: 'Password is required',
+        validate: (value: string) => isStrongPassword(value) || 'Weak password'
+      })
+    }
+  }
+
   const InputElement = multiline ? 'textarea' : 'input'
 
   return <div className="mb-4">
     <label htmlFor="email" className="block mb-2 font-bold">
-      {inputProps.label}
+      {labelOverride || inputProps.label}
     </label>
     <InputElement
       className={[

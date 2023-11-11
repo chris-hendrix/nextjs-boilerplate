@@ -28,7 +28,7 @@ const sanitizeBody = (consumedBody: any) => {
   const sanitizedText = '*****'
   const sanitizedBody = { ...consumedBody }
   if ('password' in sanitizedBody) sanitizedBody.password = sanitizedText
-  if ('cpassword' in sanitizedBody) sanitizedBody.cpassword = sanitizedText
+  if ('confirmPassword' in sanitizedBody) sanitizedBody.confirmPassword = sanitizedText
   return sanitizedBody
 }
 

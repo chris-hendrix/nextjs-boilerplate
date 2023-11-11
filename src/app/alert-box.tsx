@@ -4,7 +4,7 @@ import React from 'react'
 import Alert from '@/components/Alert'
 import { useAlert } from '@/hooks/app'
 
-const AlertBox = () => {
+const AlertBox: React.FC = () => {
   const { isVisible, message, type, duration } = useAlert()
 
   if (!isVisible || !message || !type || !duration) return null

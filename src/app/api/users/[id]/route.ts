@@ -19,6 +19,10 @@ export const PUT = routeWrapper(
     const { id } = params
     if (!id) throw new ApiError('User id required', 400)
 
+    if (req.consumedBody?.updatePassword) {
+      console.log('TODO update password logic')
+    }
+
     await checkUserBody(req.consumedBody, id)
     await checkUserMatchesSession(id)
 

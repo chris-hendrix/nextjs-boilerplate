@@ -30,7 +30,7 @@ const Signup: React.FC = () => {
           <TextInput name="username" form={form} disabled={isLoading} />
           <TextInput name="email" form={form} disabled={isLoading} />
           <TextInput name="password" form={form} disabled={isLoading} />
-          <TextInput name="cpassword" form={form} disabled={isLoading} />
+          <TextInput name="confirmPassword" form={form} disabled={isLoading} />
           <button type="submit" className="btn btn-primary w-full">
             Sign up
           </button>
