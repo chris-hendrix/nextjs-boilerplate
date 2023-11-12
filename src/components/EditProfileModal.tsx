@@ -6,6 +6,7 @@ import { useUpdateUser } from '@/hooks/user'
 import Avatar from '@/components/Avatar'
 import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
+import Form from '@/components/Form'
 import FileUploadWrapper from './FileUploadWrapper'
 
 type FormType = 'profile' | 'password'
@@ -58,30 +59,16 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
         </FileUploadWrapper>
         <button className="link link-primary text-right link-hover" onClick={() => setActiveForm('password')}>Change password</button>
       </div>
-      <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
+      <Form
+        form={form}
+        onSubmit={onSubmit}
+        onClose={() => setOpen && setOpen(false)}
+        isSubmitting={isLoading}
+      >
         <TextInput name="email" form={form} disabled={true} />
         <TextInput name="name" form={form} disabled={isLoading} />
         <TextInput name="about" form={form} disabled={isLoading} multiline />
-        <div className="flex justify-end mt-4">
-          <div className="space-x-2">
-            <button
-              type="submit"
-              className="btn btn-primary w-24"
-              disabled={!form.formState.isValid || isLoading || !form.formState.isDirty}
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary w-24"
-              onClick={() => setOpen && setOpen(false)}
-              disabled={isLoading}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </form>
+      </Form>
     </div>
   )
 }
@@ -105,30 +92,17 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
   if (!user) return <></>
   return (
     <div>
-      <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
+      <Form
+        form={form}
+        onSubmit={onSubmit}
+        onCancel={() => setActiveForm('profile')}
+        isSubmitting={isLoading}
+        allowDirtySubmit
+      >
         <TextInput name="currentPassword" form={form} disabled={isLoading} validate={() => true} />
         <TextInput name="password" labelOverride="New password*" form={form} disabled={isLoading} />
         <TextInput name="confirmPassword" labelOverride="New password confirmation*" form={form} disabled={isLoading} />
-        <div className="flex justify-end mt-4">
-          <div className="space-x-2">
-            <button
-              type="submit"
-              className="btn btn-primary w-24"
-              disabled={!form.formState.isValid || isLoading}
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary w-24"
-              onClick={() => setActiveForm('profile')}
-              disabled={isLoading}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </form>
+      </Form>
     </div>
   )
 }
