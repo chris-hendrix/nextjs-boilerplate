@@ -15,7 +15,7 @@ declare global {
 
 export const createNewUser = () => ({
   username: `patch-adams-${new Date().getTime()}`,
-  email: `patch-adams-${new Date().getTime()}@${TEST_EMAIL_DOMAIN}.com`,
+  email: `patch-adams-${new Date().getTime()}@${TEST_EMAIL_DOMAIN}`,
   password: 'Abcd1234!'
 })
 

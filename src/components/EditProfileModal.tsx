@@ -97,7 +97,6 @@ const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
         onSubmit={onSubmit}
         onCancel={() => setActiveForm('profile')}
         isSubmitting={isLoading}
-        allowDirtySubmit
       >
         <TextInput name="currentPassword" form={form} disabled={isLoading} validate={() => true} />
         <TextInput name="password" labelOverride="New password*" form={form} disabled={isLoading} />
@@ -116,14 +115,20 @@ const EditProfileModal: React.FC<ModalProps> = ({ user, setOpen }) => {
   const [activeForm, setActiveForm] = useState<FormType>('profile')
 
   const forms = {
-    profile: <EditProfileForm user={user} setOpen={setOpen} setActiveForm={setActiveForm} />,
-    password: <EditPasswordForm user={user} setActiveForm={setActiveForm} />
+    profile: {
+      title: 'Edit profile',
+      component: <EditProfileForm user={user} setOpen={setOpen} setActiveForm={setActiveForm} />
+    },
+    password: {
+      title: 'Change password',
+      component: <EditPasswordForm user={user} setActiveForm={setActiveForm} />
+    }
   }
 
   if (!user) return <></>
   return (
-    <Modal title="Edit profile" setOpen={setOpen}>
-      {forms[activeForm]}
+    <Modal title={forms[activeForm].title} setOpen={setOpen}>
+      {forms[activeForm].component}
     </Modal>
   )
 }

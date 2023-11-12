@@ -1,14 +1,13 @@
 // Form.tsx
 import React from 'react'
-import { SubmitHandler } from 'react-hook-form'
+import { SubmitHandler, UseFormReturn } from 'react-hook-form'
 
 type FormProps = {
-  form: any; // Update this type based on your actual form state type
-  onSubmit: SubmitHandler<any>; // Update the type based on your form data type
+  form: UseFormReturn;
+  onSubmit: SubmitHandler<any>;
   onClose?: () => void;
   onCancel?: () => void;
   isSubmitting?: boolean;
-  allowDirtySubmit?: boolean;
   children: React.ReactNode;
 }
 
@@ -18,7 +17,6 @@ const Form: React.FC<FormProps> = ({
   onClose = null,
   onCancel = null,
   isSubmitting = false,
-  allowDirtySubmit = false,
   children
 }) => (
   <div>
@@ -29,11 +27,7 @@ const Form: React.FC<FormProps> = ({
           <button
             type="submit"
             className="btn btn-primary w-24"
-            disabled={
-              !form.formState.isValid ||
-              isSubmitting ||
-              (!allowDirtySubmit && form.formState.isDirty)
-            }
+            disabled={!form.formState.isValid || isSubmitting}
           >
             Save
           </button>
