@@ -8,7 +8,7 @@ import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
 import FileUploadWrapper from './FileUploadWrapper'
 
-type FormType = 'profile' | 'email' | 'password'
+type FormType = 'profile' | 'password'
 interface FormProps {
   user: Partial<User>;
   setOpen?: (open: boolean) => void;
@@ -56,10 +56,7 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
             <Avatar user={user} size={60} />
           </div>
         </FileUploadWrapper>
-        <div className="flex flex-col ml-2">
-          <button className="link link-primary mb-2 text-right link-hover" onClick={() => setActiveForm('email')}>Update email</button>
-          <button className="link link-primary text-right link-hover" onClick={() => setActiveForm('password')}>Change password</button>
-        </div>
+        <button className="link link-primary text-right link-hover" onClick={() => setActiveForm('password')}>Change password</button>
       </div>
       <form className="mt-4" onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="email" form={form} disabled={true} />
@@ -146,7 +143,6 @@ const EditProfileModal: React.FC<ModalProps> = ({ user, setOpen }) => {
 
   const forms = {
     profile: <EditProfileForm user={user} setOpen={setOpen} setActiveForm={setActiveForm} />,
-    email: <>TODO</>, // TODO
     password: <EditPasswordForm user={user} setActiveForm={setActiveForm} />
   }
 
