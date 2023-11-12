@@ -7,8 +7,10 @@ interface Props {
 }
 
 const Avatar: React.FC<Props> = ({ user = null, size = '24px' }) => (
-  <div style={{ width: size, height: size }} className="relative rounded-full">
-    <Image src={user?.bucketImage || user?.image || '/avatar.svg'} alt="avatar.svg" fill />
+  <div className="avatar">
+    <div style={{ width: size, height: size }} className="relative rounded-full">
+      <Image src={user?.bucketImage || user?.image || '/avatar.svg'} alt="avatar.svg" fill />
+    </div>
   </div>
 )
 
