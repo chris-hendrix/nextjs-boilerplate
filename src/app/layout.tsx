@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import Providers from './providers'
 import Navbar from './navbar'
 import Footer from './footer'
+import AlertBox from './alert-box'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,6 +18,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
               {children}
             </main>
           </div>
+          <AlertBox />
           <Footer />
         </div>
       </Providers>

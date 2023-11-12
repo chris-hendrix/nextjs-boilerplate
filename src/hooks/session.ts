@@ -6,7 +6,7 @@ import { BuiltInProviderType } from 'next-auth/providers'
 export const useSignIn = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<any | null>(null)
 
   const [signInUser] = useSignInMutation()
 
@@ -25,15 +25,8 @@ export const useSignIn = () => {
       },
       authParams
     })
-    const url = 'data' in res && res.data?.url
-    const authError = url && new URL(url).searchParams.get('error')
-    let httpsError: string | null = null
-    if ('error' in res) {
-      if ('status' in res.error) httpsError = String('error' in res.error ? res.error.error : res.error.data)
-      else httpsError = String(res.error.message)
-    }
-    setIsSuccess(!httpsError && !authError)
-    setError(httpsError || authError || null)
+    setIsSuccess(!('error' in res))
+    setError(('error' in res && res?.error) || null)
     setIsLoading(false)
   }
 
@@ -52,6 +45,7 @@ export const useSignIn = () => {
  */
 export const useSignOut = () => {
   const [signOutUser] = useSignOutMutation()
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const signOut = async (options?: SignInOptions,) => {
     await signOutUser({
@@ -61,7 +55,8 @@ export const useSignOut = () => {
       },
     })
     window.location.reload() // TODO try to invalidate instead of reload
+    setIsSuccess(true)
   }
 
-  return { signOut }
+  return { signOut, isSuccess }
 }

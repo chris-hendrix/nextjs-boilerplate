@@ -1,7 +1,7 @@
 'use client'
 
 import { redirect } from 'next/navigation'
-import useSessionUser from '@/hooks/user'
+import { useSessionUser } from '@/hooks/user'
 import Profile from '@/components/Profile'
 
 const ProfilePage = () => {

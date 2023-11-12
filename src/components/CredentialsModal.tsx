@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAddUserMutation } from '@/store'
 import { useSignIn } from '@/hooks/session'
-import Alert from '@/components/Alert'
+import { useAlert } from '@/hooks/app'
 import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
+import { getErrorMessage } from '@/lib/error'
 
 interface Props {
   setOpen: (open: boolean) => void;
@@ -23,11 +24,16 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
     isSuccess: signInSuccess,
     error: signInError
   } = useSignIn()
+  const { showAlert } = useAlert()
 
   const isLoading = isAddUserLoading || isSignInLoading
-  const error = addUserError || signInError
+  const errorMessage = getErrorMessage(addUserError || signInError)
 
-  useEffect(() => { signInSuccess && setOpen(false) }, [signInSuccess])
+  useEffect(() => {
+    if (!signInSuccess) return
+    setOpen(false)
+    showAlert({ successMessage: 'Successfully signed in' })
+  }, [signInSuccess])
 
   const onSubmit = async (data: { [x: string]: string }) => {
     const { email, password } = data
@@ -40,12 +46,12 @@ const CredentialsModal: React.FC<Props> = ({ setOpen, signUp = false }) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <TextInput name="email" form={form} disabled={isLoading} />
         <TextInput name="password" form={form} disabled={isLoading} validate={!signUp ? () => true : null} />
-        {signUp && <TextInput name="cpassword" form={form} disabled={isLoading} />}
+        {signUp && <TextInput name="confirmPassword" form={form} disabled={isLoading} />}
         <button type="submit" className="btn btn-primary w-full">
           {signUp ? 'Sign up' : 'Log in'}
         </button>
       </form>
-      {error && <div className="mt-2"><Alert error={error} time={null} /></div>}
+      {errorMessage && <div className="mt-2 h-1 text-sm text-red-500">{errorMessage}</div>}
     </Modal>
 
   )

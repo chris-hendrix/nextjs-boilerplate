@@ -31,7 +31,7 @@ export const userApi = createApi({
       query: (data) => ({
         url: `users/${data?.id}`,
         method: 'PUT',
-        body: { ...data, id: undefined }
+        body: { ...data, id: undefined },
       }),
       invalidatesTags: (user) => [{ type: 'User', id: user?.id }],
     })

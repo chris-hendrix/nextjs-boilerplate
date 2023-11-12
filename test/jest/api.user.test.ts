@@ -52,4 +52,12 @@ describe('/api/users', () => {
     const res = await putUser(req, { params: { id: otherUser.id } })
     expect(res.status).toBe(401)
   })
+
+  test('user can change password', async () => {
+    const user = await createGetServerSessionMock()
+    const body = { currentPassword: 'Abcd1234!', password: 'Abcd1234!!!', confirmPassword: 'Abcd1234!!!' }
+    const req = createNextRequest({ method: 'PUT', body })
+    const res = await putUser(req, { params: { id: user.id } })
+    expect(res.status).toBe(200)
+  })
 })
