@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
-import useSessionUser from '@/hooks/user'
+import { useSessionUser } from '@/hooks/user'
 import Avatar from '@/components/Avatar'
 import CredentialsModal from '@/components/CredentialsModal'
 import { useSignOut } from '@/hooks/session'

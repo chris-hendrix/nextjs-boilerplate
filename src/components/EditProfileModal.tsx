@@ -1,42 +1,12 @@
-import React, { useEffect, useState, createContext, useContext, ReactNode } from 'react'
+import React, { useEffect, useState } from 'react'
 import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
-import { useUpdateUserMutation } from '@/store'
 import { useAlert } from '@/hooks/app'
+import { useUpdateUser } from '@/hooks/user'
 import Avatar from '@/components/Avatar'
 import TextInput from '@/components/TextInput'
 import Modal from '@/components/Modal'
 import FileUploadWrapper from './FileUploadWrapper'
-
-type UserContextType = {
-  updateUser: any
-  showAlert: (options: { successMessage?: string; error?: any }) => void;
-  isLoading: boolean
-}
-
-const UserContext = createContext<UserContextType | undefined>(undefined)
-
-export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [updateUser, { isSuccess, error, isLoading }] = useUpdateUserMutation()
-  const { showAlert } = useAlert()
-
-  useEffect(() => { isSuccess && showAlert({ successMessage: 'Changes saved' }) }, [isSuccess])
-  useEffect(() => { error && showAlert({ error }) }, [error])
-
-  return (
-    <UserContext.Provider value={{ updateUser, showAlert, isLoading }}>
-      {children}
-    </UserContext.Provider>
-  )
-}
-
-export const useUser = () => {
-  const context = useContext(UserContext)
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider')
-  }
-  return context
-}
 
 type FormType = 'profile' | 'email' | 'password'
 interface FormProps {
@@ -46,27 +16,22 @@ interface FormProps {
 }
 
 const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) => {
-  const { updateUser, showAlert, isLoading } = useUser()
+  const { updateUser, isLoading } = useUpdateUser()
+  const { showAlert } = useAlert()
   const form = useForm({ mode: 'onChange' })
   const [imageUrl, setImageUrl] = useState('')
   const [error, setError] = useState<any | null>(null) // image upload error
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
     const { name, about } = data
-    await updateUser({
-      id: user.id,
-      name,
-      info: { about }
-    })
+    const res = await updateUser({ id: user.id, name, info: { about } })
+    if (!('error' in res)) form.reset({ name, email: user.email, about })
   }
 
   useEffect(() => {
     // initial form data
-    form.reset({
-      name: user.name,
-      email: user.email,
-      about: (user.info as any)?.about,
-    })
+    const { name, email, info } = user
+    form.reset({ name, email, about: (info as any)?.about })
   }, [])
 
   // image upload
@@ -125,7 +90,7 @@ const EditProfileForm: React.FC<FormProps> = ({ user, setOpen, setActiveForm }) 
 }
 
 const EditPasswordForm: React.FC<FormProps> = ({ user, setActiveForm }) => {
-  const { updateUser, isLoading } = useUser()
+  const { updateUser, isLoading } = useUpdateUser()
   const form = useForm({ mode: 'onChange' })
 
   const onSubmit = async (data: { [x: string]: unknown }) => {
@@ -188,9 +153,7 @@ const EditProfileModal: React.FC<ModalProps> = ({ user, setOpen }) => {
   if (!user) return <></>
   return (
     <Modal title="Edit profile" setOpen={setOpen}>
-      <UserProvider>
       {forms[activeForm]}
-      </UserProvider>
     </Modal>
   )
 }
